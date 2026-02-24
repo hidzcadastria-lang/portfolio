@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VORM — Architecten</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #0d0d0d;
+      --paper:   #f5f2ee;
+      --gold:    #b8965a;
+      --gold-lt: #d4b07a;
+      --warm:    #1a1612;
+      --mid:     #6b6560;
+      --line:    rgba(184,150,90,.25);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--ink);
+      color: var(--paper);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ──────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 60px;
+      mix-blend-mode: normal;
+      transition: background .4s, padding .4s;
+    }
+    nav.scrolled {
+      background: rgba(13,13,13,.92);
+      backdrop-filter: blur(12px);
+      padding: 18px 60px;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      letter-spacing: .35em;
+      color: var(--paper);
+      text-transform: uppercase;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .75rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--paper);
+      text-decoration: none;
+      opacity: .65;
+      transition: opacity .25s, color .25s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-cta {
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--line);
+      padding: 10px 24px;
+      text-decoration: none;
+      transition: background .25s, color .25s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--ink); }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100svh;
+      min-height: 680px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--ink);
+    }
+
+    /* Architectural SVG backdrop */
+    .hero-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(13,13,13,.05) 0%,
+        rgba(13,13,13,.55) 60%,
+        rgba(13,13,13,.92) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 60px 80px;
+      max-width: 820px;
+    }
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: .7rem;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 7.5rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -.01em;
+      margin-bottom: 32px;
+    }
+    h1 em { font-style: italic; color: var(--gold-lt); }
+    .hero-sub {
+      font-size: .85rem;
+      line-height: 1.8;
+      color: rgba(245,242,238,.6);
+      max-width: 480px;
+      margin-bottom: 48px;
+      letter-spacing: .02em;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--gold);
+      color: var(--ink);
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 16px 36px;
+      font-weight: 500;
+      transition: background .25s;
+    }
+    .btn-primary:hover { background: var(--gold-lt); }
+    .btn-ghost {
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--paper);
+      opacity: .7;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity .25s;
+    }
+    .btn-ghost:hover { opacity: 1; }
+
+    /* scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      right: 60px;
+      bottom: 80px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-size: .62rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: .7;
+    }
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%,100%  { transform: scaleY(1); opacity: .7; }
+      50% { transform: scaleY(.5); opacity: .3; }
+    }
+
+    /* ─── NUMBERS BAR ───────────────────────────────────────── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .stat {
+      padding: 40px 48px;
+      border-right: 1px solid var(--line);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-label {
+      font-size: .68rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    /* ─── SECTION HEADER ────────────────────────────────────── */
+    .sec-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 64px;
+    }
+    .sec-eyebrow {
+      font-size: .68rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sec-eyebrow::before {
+      content: '';
+      width: 28px; height: 1px;
+      background: var(--gold);
+    }
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -.01em;
+    }
+    h2 em { font-style: italic; color: var(--gold-lt); }
+    .sec-link {
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+      transition: border-color .25s;
+    }
+    .sec-link:hover { border-color: var(--gold); }
+
+    /* ─── PROJECTS ──────────────────────────────────────────── */
+    .projects { padding: 100px 60px; }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 2px;
+    }
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .project-card:first-child {
+      grid-row: 1 / 3;
+    }
+    .project-visual {
+      width: 100%;
+      aspect-ratio: 4/3;
+      display: block;
+      transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+    }
+    .project-card:first-child .project-visual {
+      aspect-ratio: unset;
+      height: 100%;
+      min-height: 640px;
+    }
+    .project-card:hover .project-visual {
+      transform: scale(1.04);
+    }
+    .project-meta {
+      position: absolute;
+      inset: 0;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background: linear-gradient(to top, rgba(13,13,13,.85) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity .35s;
+    }
+    .project-card:hover .project-meta { opacity: 1; }
+    .project-tag {
+      font-size: .62rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .project-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      line-height: 1.1;
+    }
+    .project-loc {
+      font-size: .72rem;
+      color: rgba(245,242,238,.5);
+      margin-top: 4px;
+      letter-spacing: .08em;
+    }
+    /* always-visible label on large card */
+    .project-card:first-child .project-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 40px 36px 36px;
+      background: linear-gradient(to top, rgba(13,13,13,.9) 0%, transparent 100%);
+    }
+    .project-card:first-child .project-meta { opacity: 1; background: none; }
+
+    /* ─── APPROACH ──────────────────────────────────────────── */
+    .approach {
+      padding: 100px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      border-top: 1px solid var(--line);
+    }
+    .approach-visual {
+      position: relative;
+      height: 560px;
+    }
+    .approach-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .approach-badge {
+      position: absolute;
+      bottom: -24px; right: -24px;
+      width: 140px; height: 140px;
+      background: var(--gold);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .approach-badge-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .approach-badge-txt {
+      font-size: .58rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--ink);
+      opacity: .75;
+    }
+    .approach-text p {
+      font-size: .9rem;
+      line-height: 1.85;
+      color: rgba(245,242,238,.65);
+      margin-bottom: 24px;
+    }
+    .pillars {
+      margin-top: 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--line);
+    }
+    .pillar {
+      padding: 28px 24px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .pillar:nth-child(even) { border-right: none; }
+    .pillar:nth-child(3), .pillar:nth-child(4) { border-bottom: none; }
+    .pillar-icon {
+      width: 28px; height: 28px;
+      margin-bottom: 14px;
+      color: var(--gold);
+    }
+    .pillar-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .pillar-desc {
+      font-size: .72rem;
+      line-height: 1.7;
+      color: var(--mid);
+    }
+
+    /* ─── TESTIMONIAL ───────────────────────────────────────── */
+    .testimonial {
+      padding: 100px 60px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .testimonial-tag {
+      font-size: .68rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding-top: 10px;
+    }
+    blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--paper);
+      margin-bottom: 32px;
+    }
+    blockquote::before {
+      content: '\201C';
+      color: var(--gold);
+      font-size: 4rem;
+      line-height: 0;
+      vertical-align: -.45em;
+      margin-right: 8px;
+    }
+    .cite {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .cite-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--line);
+      overflow: hidden;
+    }
+    .cite-name {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--paper);
+    }
+    .cite-role {
+      font-size: .7rem;
+      color: var(--mid);
+      margin-top: 2px;
+    }
+
+    /* ─── SERVICES ──────────────────────────────────────────── */
+    .services {
+      padding: 100px 60px;
+      border-top: 1px solid var(--line);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 64px;
+      border: 1px solid var(--line);
+    }
+    .service-item {
+      padding: 48px 40px;
+      border-right: 1px solid var(--line);
+      transition: background .3s;
+      cursor: default;
+    }
+    .service-item:last-child { border-right: none; }
+    .service-item:hover { background: rgba(184,150,90,.06); }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 300;
+      color: rgba(184,150,90,.15);
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    .service-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .service-desc {
+      font-size: .78rem;
+      line-height: 1.8;
+      color: var(--mid);
+    }
+
+    /* ─── TEAM ──────────────────────────────────────────────── */
+    .team {
+      padding: 100px 60px;
+      border-top: 1px solid var(--line);
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+    }
+    .team-card { position: relative; overflow: hidden; }
+    .team-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      display: block;
+      transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+    }
+    .team-card:hover .team-photo { transform: scale(1.05); }
+    .team-info {
+      padding: 20px 4px 0;
+    }
+    .team-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+    .team-role {
+      font-size: .68rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+
+    /* ─── CTA BAND ──────────────────────────────────────────── */
+    .cta-band {
+      padding: 120px 60px;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .cta-band h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.1;
+      max-width: 560px;
+    }
+    .cta-band h3 em { font-style: italic; }
+    .btn-dark {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ink);
+      color: var(--paper);
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 18px 40px;
+      white-space: nowrap;
+      transition: background .25s;
+    }
+    .btn-dark:hover { background: var(--warm); }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      padding: 64px 60px 48px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 60px;
+    }
+    .footer-brand p {
+      font-size: .8rem;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-top: 20px;
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: .65rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li + li { margin-top: 10px; }
+    .footer-col a {
+      font-size: .8rem;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-col a:hover { color: var(--paper); }
+    .footer-bottom {
+      padding: 24px 60px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom span {
+      font-size: .68rem;
+      color: var(--mid);
+      letter-spacing: .08em;
+    }
+
+    /* ─── ANIMATIONS ────────────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links, .nav-cta { display: none; }
+      .hero-content { padding: 0 24px 60px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat { padding: 28px 24px; }
+      .projects { padding: 60px 24px; }
+      .project-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .project-card:first-child { grid-row: auto; }
+      .project-card:first-child .project-visual { min-height: 340px; }
+      .approach { padding: 60px 24px; grid-template-columns: 1fr; gap: 48px; }
+      .approach-badge { display: none; }
+      .testimonial { padding: 60px 24px; grid-template-columns: 1fr; gap: 24px; }
+      .services { padding: 60px 24px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-item { border-right: none; border-bottom: 1px solid var(--line); }
+      .service-item:last-child { border-bottom: none; }
+      .team { padding: 60px 24px; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .cta-band { padding: 80px 24px; flex-direction: column; align-items: flex-start; }
+      footer { padding: 48px 24px; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .footer-bottom { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
+      .scroll-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ───────────────────────────────────────────────────── -->
+<nav id="nav">
+  <div class="nav-logo">V<span>O</span>RM</div>
+  <ul class="nav-links">
+    <li><a href="#projects">Projecten</a></li>
+    <li><a href="#approach">Aanpak</a></li>
+    <li><a href="#services">Diensten</a></li>
+    <li><a href="#team">Team</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Contact</a>
+</nav>
+
+<!-- ─── HERO ───────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg">
+    <svg class="hero-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1a2030"/>
+          <stop offset="60%" stop-color="#0d1520"/>
+          <stop offset="100%" stop-color="#0d0d0d"/>
+        </linearGradient>
+        <linearGradient id="goldGlow" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#b8965a" stop-opacity=".9"/>
+          <stop offset="100%" stop-color="#b8965a" stop-opacity=".1"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Sky -->
+      <rect width="1440" height="900" fill="url(#skyGrad)"/>
+
+      <!-- Stars -->
+      <g fill="#f5f2ee" opacity=".4">
+        <circle cx="120" cy="80" r=".8"/><circle cx="340" cy="40" r=".6"/><circle cx="580" cy="60" r=".9"/>
+        <circle cx="820" cy="30" r=".5"/><circle cx="1050" cy="70" r=".7"/><circle cx="1280" cy="50" r=".8"/>
+        <circle cx="200" cy="130" r=".5"/><circle cx="450" cy="110" r=".6"/><circle cx="750" cy="90" r=".7"/>
+        <circle cx="980" cy="120" r=".5"/><circle cx="1200" cy="100" r=".6"/>
+        <circle cx="60" cy="160" r=".4"/><circle cx="700" cy="150" r=".5"/>
+      </g>
+
+      <!-- Horizon glow -->
+      <ellipse cx="900" cy="540" rx="600" ry="120" fill="#b8965a" opacity=".06"/>
+
+      <!-- Ground plane -->
+      <rect x="0" y="700" width="1440" height="200" fill="#0d0d0d"/>
+
+      <!-- ── MAIN BUILDING (centre-right) ── -->
+      <!-- Base -->
+      <rect x="780" y="340" width="380" height="360" fill="#141414"/>
+      <!-- Glass facade grid -->
+      <g stroke="#b8965a" stroke-width=".4" opacity=".18">
+        <!-- Verticals -->
+        <line x1="818" y1="340" x2="818" y2="700"/>
+        <line x1="856" y1="340" x2="856" y2="700"/>
+        <line x1="894" y1="340" x2="894" y2="700"/>
+        <line x1="932" y1="340" x2="932" y2="700"/>
+        <line x1="970" y1="340" x2="970" y2="700"/>
+        <line x1="1008" y1="340" x2="1008" y2="700"/>
+        <line x1="1046" y1="340" x2="1046" y2="700"/>
+        <line x1="1084" y1="340" x2="1084" y2="700"/>
+        <line x1="1122" y1="340" x2="1122" y2="700"/>
+        <!-- Horizontals -->
+        <line x1="780" y1="370" x2="1160" y2="370"/>
+        <line x1="780" y1="400" x2="1160" y2="400"/>
+        <line x1="780" y1="430" x2="1160" y2="430"/>
+        <line x1="780" y1="460" x2="1160" y2="460"/>
+        <line x1="780" y1="490" x2="1160" y2="490"/>
+        <line x1="780" y1="520" x2="1160" y2="520"/>
+        <line x1="780" y1="550" x2="1160" y2="550"/>
+        <line x1="780" y1="580" x2="1160" y2="580"/>
+        <line x1="780" y1="610" x2="1160" y2="610"/>
+        <line x1="780" y1="640" x2="1160" y2="640"/>
+        <line x1="780" y1="670" x2="1160" y2="670"/>
+      </g>
+      <!-- Lit windows -->
+      <g fill="#b8965a">
+        <rect x="788" y="348" width="22" height="14" opacity=".55"/>
+        <rect x="864" y="378" width="22" height="14" opacity=".45"/>
+        <rect x="902" y="408" width="22" height="14" opacity=".6"/>
+        <rect x="978" y="348" width="22" height="14" opacity=".5"/>
+        <rect x="1016" y="438" width="22" height="14" opacity=".4"/>
+        <rect x="826" y="468" width="22" height="14" opacity=".55"/>
+        <rect x="940" y="498" width="22" height="14" opacity=".35"/>
+        <rect x="1054" y="378" width="22" height="14" opacity=".5"/>
+        <rect x="788" y="558" width="22" height="14" opacity=".4"/>
+        <rect x="864" y="528" width="22" height="14" opacity=".6"/>
+        <rect x="1092" y="468" width="22" height="14" opacity=".45"/>
+      </g>
+      <!-- Top crown / cornice -->
+      <rect x="770" y="330" width="400" height="12" fill="#1e1e1e"/>
+      <rect x="760" y="322" width="420" height="10" fill="#252525"/>
+
+      <!-- ── WING LEFT ── -->
+      <rect x="580" y="440" width="200" height="260" fill="#111"/>
+      <g stroke="#b8965a" stroke-width=".3" opacity=".14">
+        <line x1="608" y1="440" x2="608" y2="700"/>
+        <line x1="636" y1="440" x2="636" y2="700"/>
+        <line x1="664" y1="440" x2="664" y2="700"/>
+        <line x1="692" y1="440" x2="692" y2="700"/>
+        <line x1="720" y1="440" x2="720" y2="700"/>
+        <line x1="748" y1="440" x2="748" y2="700"/>
+        <line x1="580" y1="468" x2="780" y2="468"/>
+        <line x1="580" y1="496" x2="780" y2="496"/>
+        <line x1="580" y1="524" x2="780" y2="524"/>
+        <line x1="580" y1="552" x2="780" y2="552"/>
+        <line x1="580" y1="580" x2="780" y2="580"/>
+        <line x1="580" y1="608" x2="780" y2="608"/>
+        <line x1="580" y1="636" x2="780" y2="636"/>
+        <line x1="580" y1="664" x2="780" y2="664"/>
+      </g>
+      <g fill="#c8a06a" opacity=".4">
+        <rect x="594" y="454" width="18" height="10"/>
+        <rect x="650" y="482" width="18" height="10"/>
+        <rect x="706" y="454" width="18" height="10"/>
+        <rect x="622" y="538" width="18" height="10"/>
+        <rect x="734" y="566" width="18" height="10"/>
+      </g>
+      <rect x="572" y="432" width="216" height="10" fill="#1e1e1e"/>
+
+      <!-- ── SLENDER TOWER (far right) ── -->
+      <rect x="1190" y="200" width="90" height="500" fill="#0f0f0f"/>
+      <g stroke="#b8965a" stroke-width=".3" opacity=".12">
+        <line x1="1210" y1="200" x2="1210" y2="700"/>
+        <line x1="1230" y1="200" x2="1230" y2="700"/>
+        <line x1="1250" y1="200" x2="1250" y2="700"/>
+        <line x1="1270" y1="200" x2="1270" y2="700"/>
+        <line x1="1190" y1="230" x2="1280" y2="230"/>
+        <line x1="1190" y1="260" x2="1280" y2="260"/>
+        <line x1="1190" y1="290" x2="1280" y2="290"/>
+        <line x1="1190" y1="320" x2="1280" y2="320"/>
+        <line x1="1190" y1="350" x2="1280" y2="350"/>
+        <line x1="1190" y1="380" x2="1280" y2="380"/>
+        <line x1="1190" y1="410" x2="1280" y2="410"/>
+        <line x1="1190" y1="440" x2="1280" y2="440"/>
+        <line x1="1190" y1="470" x2="1280" y2="470"/>
+        <line x1="1190" y1="500" x2="1280" y2="500"/>
+        <line x1="1190" y1="530" x2="1280" y2="530"/>
+        <line x1="1190" y1="560" x2="1280" y2="560"/>
+        <line x1="1190" y1="590" x2="1280" y2="590"/>
+        <line x1="1190" y1="620" x2="1280" y2="620"/>
+        <line x1="1190" y1="650" x2="1280" y2="650"/>
+        <line x1="1190" y1="680" x2="1280" y2="680"/>
+      </g>
+      <g fill="#b8965a" opacity=".5">
+        <rect x="1196" y="208" width="14" height="18"/>
+        <rect x="1216" y="248" width="14" height="18"/>
+        <rect x="1196" y="308" width="14" height="18"/>
+        <rect x="1256" y="278" width="14" height="18"/>
+        <rect x="1236" y="368" width="14" height="18"/>
+        <rect x="1196" y="428" width="14" height="18"/>
+        <rect x="1256" y="488" width="14" height="18"/>
+      </g>
+      <!-- Antenna -->
+      <line x1="1235" y1="200" x2="1235" y2="140" stroke="#b8965a" stroke-width="1" opacity=".5"/>
+      <circle cx="1235" cy="138" r="3" fill="#b8965a" opacity=".8"/>
+      <rect x="1183" y="192" width="104" height="10" fill="#1e1e1e"/>
+
+      <!-- ── LOW WING RIGHT ── -->
+      <rect x="1280" y="560" width="160" height="140" fill="#111"/>
+      <g stroke="#b8965a" stroke-width=".3" opacity=".1">
+        <line x1="1310" y1="560" x2="1310" y2="700"/>
+        <line x1="1340" y1="560" x2="1340" y2="700"/>
+        <line x1="1370" y1="560" x2="1370" y2="700"/>
+        <line x1="1400" y1="560" x2="1400" y2="700"/>
+        <line x1="1280" y1="588" x2="1440" y2="588"/>
+        <line x1="1280" y1="616" x2="1440" y2="616"/>
+        <line x1="1280" y1="644" x2="1440" y2="644"/>
+        <line x1="1280" y1="672" x2="1440" y2="672"/>
+      </g>
+      <rect x="1272" y="552" width="168" height="10" fill="#1e1e1e"/>
+
+      <!-- ── FOREGROUND ELEMENTS ── -->
+      <!-- Street / plaza -->
+      <rect x="0" y="700" width="1440" height="3" fill="#1a1a1a"/>
+      <!-- Plaza detail lines -->
+      <g stroke="#b8965a" stroke-width=".5" opacity=".07">
+        <line x1="0" y1="720" x2="1440" y2="720"/>
+        <line x1="0" y1="750" x2="1440" y2="750"/>
+        <line x1="500" y1="700" x2="500" y2="900"/>
+        <line x1="700" y1="700" x2="700" y2="900"/>
+        <line x1="900" y1="700" x2="900" y2="900"/>
+        <line x1="1100" y1="700" x2="1100" y2="900"/>
+      </g>
+
+      <!-- Trees (stylised) -->
+      <g opacity=".35">
+        <rect x="400" y="650" width="3" height="50" fill="#2a2a2a"/>
+        <ellipse cx="401" cy="640" rx="22" ry="30" fill="#1a2018"/>
+        <rect x="500" y="665" width="2" height="35" fill="#2a2a2a"/>
+        <ellipse cx="501" cy="655" rx="16" ry="22" fill="#1a2018"/>
+        <rect x="450" y="658" width="2" height="42" fill="#2a2a2a"/>
+        <ellipse cx="451" cy="648" rx="18" ry="26" fill="#1a2018"/>
+        <rect x="350" y="670" width="2" height="30" fill="#2a2a2a"/>
+        <ellipse cx="351" cy="662" rx="14" ry="18" fill="#1a2018"/>
+      </g>
+
+      <!-- Gold horizon line -->
+      <line x1="0" y1="700" x2="1440" y2="700" stroke="#b8965a" stroke-width="1" opacity=".3"/>
+
+      <!-- Subtle reflections on ground -->
+      <rect x="780" y="700" width="380" height="80" fill="url(#goldGlow)" opacity=".08"/>
+      <rect x="1190" y="700" width="90" height="60" fill="url(#goldGlow)" opacity=".1"/>
+    </svg>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Architecten &amp; Ontwerpers</div>
+    <h1>Ruimte die<br/><em>betekenis</em><br/>draagt</h1>
+    <p class="hero-sub">Wij ontwerpen gebouwen die generaties overleven. Van privéwoning tot stadsontwikkeling — elk project is een statement.</p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">Bekijk projecten <span>→</span></a>
+      <a href="#approach" class="btn-ghost">Onze aanpak <span>↓</span></a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- ─── STATS ───────────────────────────────────────────────────── -->
+<div class="stats">
+  <div class="stat fade-up">
+    <div class="stat-num">24</div>
+    <div class="stat-label">Jaar ervaring</div>
+  </div>
+  <div class="stat fade-up" style="transition-delay:.1s">
+    <div class="stat-num">180+</div>
+    <div class="stat-label">Gerealiseerde projecten</div>
+  </div>
+  <div class="stat fade-up" style="transition-delay:.2s">
+    <div class="stat-num">14</div>
+    <div class="stat-label">Internationale awards</div>
+  </div>
+  <div class="stat fade-up" style="transition-delay:.3s">
+    <div class="stat-num">8</div>
+    <div class="stat-label">Landen actief</div>
+  </div>
+</div>
+
+<!-- ─── PROJECTS ────────────────────────────────────────────────── -->
+<section class="projects" id="projects">
+  <div class="sec-header fade-up">
+    <div>
+      <div class="sec-eyebrow">Geselecteerde werken</div>
+      <h2>Projecten die<br/><em>verhalen vertellen</em></h2>
+    </div>
+    <a href="#" class="sec-link">Alle projecten →</a>
+  </div>
+
+  <div class="project-grid">
+    <!-- Large card -->
+    <div class="project-card fade-up">
+      <svg class="project-visual" viewBox="0 0 640 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0d1830"/>
+            <stop offset="100%" stop-color="#0a0a0a"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="900" fill="url(#g1)"/>
+        <!-- Modernist villa -->
+        <rect x="80" y="500" width="480" height="300" fill="#141414"/>
+        <rect x="80" y="380" width="320" height="120" fill="#181818"/>
+        <rect x="80" y="280" width="200" height="100" fill="#161616"/>
+        <!-- Glass -->
+        <rect x="100" y="520" width="180" height="120" fill="#1a3050" opacity=".7"/>
+        <rect x="300" y="520" width="240" height="280" fill="#1a2840" opacity=".6"/>
+        <!-- Lit windows -->
+        <rect x="110" y="530" width="160" height="100" fill="#b8965a" opacity=".12"/>
+        <rect x="120" y="292" width="160" height="80" fill="#c8a06a" opacity=".2"/>
+        <rect x="100" y="392" width="280" height="98" fill="#b8965a" opacity=".1"/>
+        <!-- Pool -->
+        <rect x="80" y="800" width="480" height="30" fill="#1a3550" opacity=".8"/>
+        <rect x="80" y="800" width="480" height="5" fill="#4a90b8" opacity=".4"/>
+        <!-- Ground -->
+        <rect x="0" y="830" width="640" height="70" fill="#0a0a0a"/>
+        <!-- Trees -->
+        <rect x="30" y="710" width="3" height="120" fill="#1a2018" opacity=".6"/>
+        <ellipse cx="31" cy="700" rx="18" ry="30" fill="#1a2c18" opacity=".5"/>
+        <rect x="570" y="720" width="3" height="110" fill="#1a2018" opacity=".6"/>
+        <ellipse cx="571" cy="710" rx="16" ry="26" fill="#1a2c18" opacity=".5"/>
+        <!-- Horizon glow -->
+        <ellipse cx="320" cy="500" rx="400" ry="60" fill="#b8965a" opacity=".04"/>
+        <!-- Gold line -->
+        <line x1="80" y1="500" x2="560" y2="500" stroke="#b8965a" stroke-width=".5" opacity=".4"/>
+        <!-- Label bg -->
+        <rect x="0" y="750" width="640" height="150" fill="url(#g1)" opacity=".5"/>
+      </svg>
+      <div class="project-meta">
+        <div class="project-tag">Residentieel · 2024</div>
+        <div class="project-name">Villa Horizon</div>
+        <div class="project-loc">Knokke-Heist, België</div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="project-card fade-up" style="transition-delay:.15s">
+      <svg class="project-visual" viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a1008"/>
+            <stop offset="100%" stop-color="#0a0a0a"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="480" fill="url(#g2)"/>
+        <!-- Tower -->
+        <rect x="220" y="60" width="200" height="380" fill="#141414"/>
+        <!-- Parametric facade diamonds -->
+        <g fill="none" stroke="#b8965a" stroke-width=".6" opacity=".3">
+          <polygon points="260,60 300,110 260,160 220,110"/>
+          <polygon points="300,60 340,110 300,160 260,110"/>
+          <polygon points="340,60 380,110 340,160 300,110"/>
+          <polygon points="380,60 420,110 380,160 340,110"/>
+          <polygon points="260,160 300,210 260,260 220,210"/>
+          <polygon points="300,160 340,210 300,260 260,210"/>
+          <polygon points="340,160 380,210 340,260 300,210"/>
+          <polygon points="380,160 420,210 380,260 340,210"/>
+          <polygon points="260,260 300,310 260,360 220,310"/>
+          <polygon points="300,260 340,310 300,360 260,310"/>
+          <polygon points="340,260 380,310 340,360 300,310"/>
+          <polygon points="380,260 420,310 380,360 340,310"/>
+        </g>
+        <!-- Lit cells -->
+        <polygon points="300,60 340,110 300,160 260,110" fill="#b8965a" opacity=".15"/>
+        <polygon points="340,160 380,210 340,260 300,210" fill="#b8965a" opacity=".12"/>
+        <polygon points="260,260 300,310 260,360 220,310" fill="#b8965a" opacity=".1"/>
+        <!-- Sky haze -->
+        <ellipse cx="320" cy="300" rx="200" ry="80" fill="#b8965a" opacity=".04"/>
+        <rect x="0" y="420" width="640" height="60" fill="#0a0a0a"/>
+      </svg>
+      <div class="project-meta">
+        <div class="project-tag">Commercieel · 2023</div>
+        <div class="project-name">Tower X</div>
+        <div class="project-loc">Brussel, België</div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="project-card fade-up" style="transition-delay:.25s">
+      <svg class="project-visual" viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#0d1a20"/>
+            <stop offset="100%" stop-color="#0a0a0a"/>
+          </linearGradient>
+        </defs>
+        <rect width="640" height="480" fill="url(#g3)"/>
+        <!-- Museum interior atrium -->
+        <rect x="60" y="60" width="520" height="360" fill="#111"/>
+        <!-- Skylight grid -->
+        <g fill="none" stroke="#e8d8b8" stroke-width=".8" opacity=".25">
+          <line x1="60" y1="60" x2="580" y2="60"/>
+          <line x1="60" y1="90" x2="580" y2="90"/>
+          <line x1="60" y1="120" x2="580" y2="120"/>
+          <line x1="60" y1="60" x2="60" y2="120"/>
+          <line x1="147" y1="60" x2="147" y2="120"/>
+          <line x1="234" y1="60" x2="234" y2="120"/>
+          <line x1="320" y1="60" x2="320" y2="120"/>
+          <line x1="407" y1="60" x2="407" y2="120"/>
+          <line x1="494" y1="60" x2="494" y2="120"/>
+          <line x1="580" y1="60" x2="580" y2="120"/>
+        </g>
+        <!-- Light shafts from skylights -->
+        <polygon points="60,120 147,120 120,420 90,420" fill="#e8d8b8" opacity=".03"/>
+        <polygon points="234,120 320,120 300,420 250,420" fill="#e8d8b8" opacity=".04"/>
+        <polygon points="407,120 494,120 470,420 430,420" fill="#e8d8b8" opacity=".03"/>
+        <!-- White marble walls -->
+        <rect x="60" y="120" width="12" height="300" fill="#1a1a1a"/>
+        <rect x="568" y="120" width="12" height="300" fill="#1a1a1a"/>
+        <!-- Floor -->
+        <rect x="60" y="400" width="520" height="20" fill="#181818"/>
+        <g stroke="#b8965a" stroke-width=".3" opacity=".15">
+          <line x1="60" y1="410" x2="580" y2="410"/>
+          <line x1="200" y1="400" x2="200" y2="420"/>
+          <line x1="320" y1="400" x2="320" y2="420"/>
+          <line x1="440" y1="400" x2="440" y2="420"/>
+        </g>
+        <!-- Sculptures silhouette -->
+        <rect x="200" y="320" width="20" height="80" fill="#1e1e1e" rx="2"/>
+        <ellipse cx="210" cy="316" rx="18" ry="22" fill="#1e1e1e"/>
+        <rect x="380" y="340" width="16" height="60" fill="#1e1e1e" rx="1"/>
+        <ellipse cx="388" cy="336" rx="14" ry="18" fill="#1e1e1e"/>
+        <!-- Warm glow from skylights -->
+        <ellipse cx="320" cy="200" rx="260" ry="80" fill="#e8d0a8" opacity=".04"/>
+      </svg>
+      <div class="project-meta">
+        <div class="project-tag">Cultureel · 2022</div>
+        <div class="project-name">Musée Lumière</div>
+        <div class="project-loc">Luik, België</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── APPROACH ────────────────────────────────────────────────── -->
+<section class="approach" id="approach">
+  <div class="approach-visual fade-up">
+    <svg width="100%" height="100%" viewBox="0 0 560 640" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="approachGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1a1410"/>
+          <stop offset="100%" stop-color="#0d0d0d"/>
+        </linearGradient>
+      </defs>
+      <rect width="560" height="640" fill="url(#approachGrad)"/>
+      <!-- Architectural blueprint feel -->
+      <g stroke="#b8965a" stroke-width=".4" opacity=".1" fill="none">
+        <!-- Grid -->
+        <line x1="0" y1="80" x2="560" y2="80"/><line x1="0" y1="160" x2="560" y2="160"/>
+        <line x1="0" y1="240" x2="560" y2="240"/><line x1="0" y1="320" x2="560" y2="320"/>
+        <line x1="0" y1="400" x2="560" y2="400"/><line x1="0" y1="480" x2="560" y2="480"/>
+        <line x1="0" y1="560" x2="560" y2="560"/>
+        <line x1="80" y1="0" x2="80" y2="640"/><line x1="160" y1="0" x2="160" y2="640"/>
+        <line x1="240" y1="0" x2="240" y2="640"/><line x1="320" y1="0" x2="320" y2="640"/>
+        <line x1="400" y1="0" x2="400" y2="640"/><line x1="480" y1="0" x2="480" y2="640"/>
+      </g>
+      <!-- Floor plan outline -->
+      <g stroke="#b8965a" stroke-width="1.2" fill="none" opacity=".5">
+        <rect x="80" y="120" width="400" height="280" rx="0"/>
+        <rect x="80" y="120" width="160" height="120"/>
+        <rect x="240" y="120" width="240" height="160"/>
+        <line x1="80" y1="240" x2="480" y2="240"/>
+        <line x1="240" y1="120" x2="240" y2="400"/>
+        <!-- Doors -->
+        <path d="M 80 350 Q 120 350 120 310" stroke-width=".8" opacity=".6"/>
+        <path d="M 330 400 Q 330 360 370 360" stroke-width=".8" opacity=".6"/>
+      </g>
+      <!-- Dimension lines -->
+      <g stroke="#b8965a" stroke-width=".6" opacity=".3">
+        <line x1="80" y1="440" x2="480" y2="440"/>
+        <line x1="80" y1="435" x2="80" y2="445"/>
+        <line x1="480" y1="435" x2="480" y2="445"/>
+        <line x1="520" y1="120" x2="520" y2="400"/>
+        <line x1="515" y1="120" x2="525" y2="120"/>
+        <line x1="515" y1="400" x2="525" y2="400"/>
+      </g>
+      <!-- Measurement text sim -->
+      <text x="270" y="458" font-size="9" fill="#b8965a" opacity=".5" text-anchor="middle" font-family="Inter,sans-serif" letter-spacing="2">12.400 m</text>
+      <text x="540" y="265" font-size="9" fill="#b8965a" opacity=".5" text-anchor="middle" font-family="Inter,sans-serif" letter-spacing="2" transform="rotate(90,540,265)">8.600 m</text>
+      <!-- Compass rose -->
+      <g transform="translate(460,540)" opacity=".5">
+        <line x1="0" y1="-20" x2="0" y2="20" stroke="#b8965a" stroke-width=".8"/>
+        <line x1="-20" y1="0" x2="20" y2="0" stroke="#b8965a" stroke-width=".8"/>
+        <polygon points="0,-20 4,-8 0,-12 -4,-8" fill="#b8965a"/>
+        <text x="0" y="-24" font-size="7" fill="#b8965a" text-anchor="middle" font-family="Inter,sans-serif">N</text>
+      </g>
+      <!-- Gold accent corner -->
+      <rect x="0" y="0" width="4" height="80" fill="#b8965a" opacity=".6"/>
+      <rect x="0" y="0" width="80" height="4" fill="#b8965a" opacity=".6"/>
+      <rect x="476" y="556" width="84" height="4" fill="#b8965a" opacity=".4"/>
+      <rect x="556" y="480" width="4" height="80" fill="#b8965a" opacity=".4"/>
+    </svg>
+    <div class="approach-badge">
+      <div class="approach-badge-num">24</div>
+      <div class="approach-badge-txt">jaar<br/>expertise</div>
+    </div>
+  </div>
+
+  <div class="approach-text fade-up" style="transition-delay:.2s">
+    <div class="sec-eyebrow">Onze filosofie</div>
+    <h2>Ontwerp met<br/><em>intentie</em></h2>
+    <p style="margin-top:28px">Bij VORM geloven we dat architectuur meer is dan muren en daken. Het is de kunst om ruimte te geven aan het leven — om omgevingen te creëren die mensen raken, inspireren en in herinnering blijven.</p>
+    <p>Elk project begint met een diep begrip van de mens die er zal wonen, werken of verblijven. Functie en schoonheid sluiten elkaar nooit uit — bij ons versterken ze elkaar.</p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <svg class="pillar-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="20" width="20" height="2" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="14" y1="6" x2="14" y2="20" stroke="currentColor" stroke-width="1.5"/>
+          <polyline points="8,12 14,6 20,12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="pillar-title">Duurzaamheid</div>
+        <div class="pillar-desc">Bouwen voor morgen, met respect voor de planeet.</div>
+      </div>
+      <div class="pillar">
+        <svg class="pillar-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="14" cy="14" r="8" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="14" cy="14" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="14" y1="4" x2="14" y2="6" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="14" y1="22" x2="14" y2="24" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <div class="pillar-title">Precisie</div>
+        <div class="pillar-desc">Elk detail telt. Perfectie zit in de millimeter.</div>
+      </div>
+      <div class="pillar">
+        <svg class="pillar-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="10" width="18" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <polyline points="9,10 9,6 14,3 19,6 19,10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="pillar-title">Vertrouwen</div>
+        <div class="pillar-desc">Transparant partnerschap van schets tot oplevering.</div>
+      </div>
+      <div class="pillar">
+        <svg class="pillar-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 4 L20 10 L20 22 L8 22 L8 10 Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <line x1="11" y1="16" x2="17" y2="16" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="14" y1="13" x2="14" y2="19" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <div class="pillar-title">Innovatie</div>
+        <div class="pillar-desc">Nieuwe technieken, tijdloze resultaten.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIAL ─────────────────────────────────────────────── -->
+<section class="testimonial">
+  <div class="testimonial-tag fade-up">Klant testimonial</div>
+  <div class="fade-up" style="transition-delay:.15s">
+    <blockquote>VORM heeft onze visie begrepen op een niveau dat ik niet voor mogelijk had gehouden. Het resultaat overtreft alles wat we hadden gedurfd te dromen.</blockquote>
+    <div class="cite">
+      <svg class="cite-avatar" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" fill="#1a1612"/>
+        <circle cx="24" cy="20" r="9" fill="#2a2218"/>
+        <ellipse cx="24" cy="44" rx="16" ry="12" fill="#2a2218"/>
+        <circle cx="24" cy="20" r="7" fill="#3a3228"/>
+      </svg>
+      <div>
+        <div class="cite-name">Thomas Declercq</div>
+        <div class="cite-role">CEO, Declercq Vastgoed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ────────────────────────────────────────────────── -->
+<section class="services" id="services">
+  <div class="sec-header fade-up">
+    <div>
+      <div class="sec-eyebrow">Wat wij doen</div>
+      <h2>Diensten op<br/><em>maat</em></h2>
+    </div>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-item fade-up">
+      <div class="service-num">01</div>
+      <div class="service-title">Architectuurontwerp</div>
+      <div class="service-desc">Van eerste schets tot uitvoeringsplan. Wij begeleiden het volledige ontwerpproces met aandacht voor uw noden en budget.</div>
+    </div>
+    <div class="service-item fade-up" style="transition-delay:.1s">
+      <div class="service-num">02</div>
+      <div class="service-title">Stedenbouw</div>
+      <div class="service-desc">Masterplannen, ruimtelijke visies en gebiedsontwikkeling op schaal van de stad. Met oog voor gemeenschap en leefkwaliteit.</div>
+    </div>
+    <div class="service-item fade-up" style="transition-delay:.2s">
+      <div class="service-num">03</div>
+      <div class="service-title">Interieur & Renovatie</div>
+      <div class="service-desc">Bestaande ruimtes heruit gevonden. Van historische restauratie tot hedendaagse transformatie — wij geven gebouwen een nieuw leven.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TEAM ─────────────────────────────────────────────────────── -->
+<section class="team" id="team">
+  <div class="sec-header fade-up">
+    <div>
+      <div class="sec-eyebrow">De mensen achter VORM</div>
+      <h2>Ons <em>team</em></h2>
+    </div>
+    <a href="#" class="sec-link">Leer ons kennen →</a>
+  </div>
+
+  <div class="team-grid">
+    <div class="team-card fade-up">
+      <svg class="team-photo" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="400" fill="#131310"/>
+        <circle cx="150" cy="140" r="55" fill="#1e1c18"/>
+        <ellipse cx="150" cy="340" rx="90" ry="70" fill="#1e1c18"/>
+        <circle cx="150" cy="136" r="40" fill="#2a2820"/>
+        <rect x="0" y="340" width="300" height="60" fill="url(#g1)" opacity=".8"/>
+        <!-- Subtle gold rim light -->
+        <circle cx="150" cy="136" r="42" fill="none" stroke="#b8965a" stroke-width=".5" opacity=".3"/>
+      </svg>
+      <div class="team-info">
+        <div class="team-name">Sarah Verlinden</div>
+        <div class="team-role">Founding Partner</div>
+      </div>
+    </div>
+    <div class="team-card fade-up" style="transition-delay:.1s">
+      <svg class="team-photo" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="400" fill="#111318"/>
+        <circle cx="150" cy="140" r="55" fill="#181c20"/>
+        <ellipse cx="150" cy="340" rx="90" ry="70" fill="#181c20"/>
+        <circle cx="150" cy="136" r="40" fill="#222830"/>
+        <rect x="0" y="340" width="300" height="60" opacity=".8" fill="#111318"/>
+        <circle cx="150" cy="136" r="42" fill="none" stroke="#b8965a" stroke-width=".5" opacity=".3"/>
+      </svg>
+      <div class="team-info">
+        <div class="team-name">Luc Martens</div>
+        <div class="team-role">Lead Architect</div>
+      </div>
+    </div>
+    <div class="team-card fade-up" style="transition-delay:.2s">
+      <svg class="team-photo" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="400" fill="#131210"/>
+        <circle cx="150" cy="140" r="55" fill="#1e1c16"/>
+        <ellipse cx="150" cy="340" rx="90" ry="70" fill="#1e1c16"/>
+        <circle cx="150" cy="136" r="40" fill="#28261c"/>
+        <rect x="0" y="340" width="300" height="60" opacity=".8" fill="#131210"/>
+        <circle cx="150" cy="136" r="42" fill="none" stroke="#b8965a" stroke-width=".5" opacity=".3"/>
+      </svg>
+      <div class="team-info">
+        <div class="team-name">Nathalie Wouters</div>
+        <div class="team-role">Interior Design</div>
+      </div>
+    </div>
+    <div class="team-card fade-up" style="transition-delay:.3s">
+      <svg class="team-photo" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="400" fill="#100d0a"/>
+        <circle cx="150" cy="140" r="55" fill="#1a1610"/>
+        <ellipse cx="150" cy="340" rx="90" ry="70" fill="#1a1610"/>
+        <circle cx="150" cy="136" r="40" fill="#241e16"/>
+        <rect x="0" y="340" width="300" height="60" opacity=".8" fill="#100d0a"/>
+        <circle cx="150" cy="136" r="42" fill="none" stroke="#b8965a" stroke-width=".5" opacity=".3"/>
+      </svg>
+      <div class="team-info">
+        <div class="team-name">Pieter De Wolf</div>
+        <div class="team-role">Urban Planner</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA BAND ──────────────────────────────────────────────────── -->
+<div class="cta-band" id="contact">
+  <h3>Klaar om uw <em>droomproject</em> te realiseren?</h3>
+  <a href="mailto:hello@vorm-architecten.be" class="btn-dark">Start een gesprek →</a>
+</div>
+
+<!-- ─── FOOTER ─────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-brand">
+    <div class="nav-logo">V<span style="color:var(--gold)">O</span>RM</div>
+    <p>Architecten &amp; Ontwerpers gevestigd in Brussel. Actief in België, Nederland en adarover.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Navigatie</h4>
+    <ul>
+      <li><a href="#projects">Projecten</a></li>
+      <li><a href="#approach">Aanpak</a></li>
+      <li><a href="#services">Diensten</a></li>
+      <li><a href="#team">Team</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <ul>
+      <li><a href="mailto:hello@vorm-architecten.be">hello@vorm-architecten.be</a></li>
+      <li><a href="tel:+3225551234">+32 2 555 12 34</a></li>
+      <li><a href="#">Treurenberg 12, Brussel</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Volg ons</h4>
+    <ul>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">LinkedIn</a></li>
+      <li><a href="#">Pinterest</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2025 VORM Architecten BV</span>
+  <span>Privacybeleid · Algemene Voorwaarden</span>
+</div>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll-triggered fade-ups
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

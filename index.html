@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Portfolio — Overzicht</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0A0908;
+  --surface: #131110;
+  --surface2:#1C1916;
+  --border:  rgba(255,255,255,0.07);
+  --white:   #F4F2EE;
+  --muted:   #6B6560;
+  --orange:  #FF4E1A;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 5rem 6% 3rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 100% at 50% 0%, rgba(255,78,26,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+.header-eyebrow {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.6rem;
+  animation: fadeUp 0.6s ease 0.1s both;
+}
+.header-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--orange); }
+h1 {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 800; letter-spacing: -0.04em;
+  line-height: 1; margin-bottom: 1rem;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+h1 span { color: var(--orange); }
+.header-sub {
+  font-size: 1rem; color: var(--muted); max-width: 480px; line-height: 1.65;
+  animation: fadeUp 0.7s ease 0.3s both;
+}
+.header-count {
+  position: absolute; right: 0; top: 0;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(5rem, 12vw, 10rem);
+  font-weight: 800; letter-spacing: -0.05em;
+  color: rgba(255,78,26,0.05);
+  line-height: 1; user-select: none; pointer-events: none;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── FILTERS ── */
+.filters {
+  padding: 2rem 6%;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,9,8,0.92);
+  backdrop-filter: blur(16px);
+}
+.filters-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
+}
+.filter-btn {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 0.5rem 1.1rem; border-radius: 100px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--muted);
+  cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+.filter-btn.active {
+  background: var(--orange); border-color: var(--orange);
+  color: #fff;
+}
+.filter-count {
+  margin-left: auto;
+  font-size: 0.78rem; color: var(--muted);
+}
+
+/* ── GRID ── */
+.grid-wrap {
+  padding: 3rem 6% 6rem;
+}
+.grid-inner { max-width: 1200px; margin: 0 auto; }
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+  border: 1.5px solid var(--border);
+}
+
+/* ── CARD ── */
+.project-card {
+  background: var(--surface);
+  border-right: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+  display: flex; flex-direction: column;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  cursor: pointer;
+}
+.project-card.visible { opacity: 1; transform: none; }
+.project-card:nth-child(3n) { border-right: none; }
+.project-card.hidden { display: none; }
+
+.project-card:hover .card-preview { filter: brightness(1.08); }
+.project-card:hover .card-arrow { transform: translate(3px, -3px); }
+
+/* Featured cards span 2 columns */
+.project-card.featured {
+  grid-column: span 2;
+}
+.project-card.featured .card-preview { height: 300px; }
+
+/* ── CARD PREVIEW ── */
+.card-preview {
+  height: 220px;
+  position: relative; overflow: hidden;
+  transition: filter 0.3s;
+  flex-shrink: 0;
+}
+.preview-bg {
+  position: absolute; inset: 0;
+  background: var(--preview-bg, #131110);
+  transition: transform 0.5s ease;
+}
+.project-card:hover .preview-bg { transform: scale(1.02); }
+
+.preview-content {
+  position: absolute; inset: 0;
+  padding: 1.8rem 2rem;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  z-index: 2;
+}
+.preview-tag {
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--preview-accent, #FF4E1A);
+  opacity: 0.85; margin-bottom: 0.5rem;
+}
+.preview-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 800; letter-spacing: -0.04em;
+  line-height: 1; color: var(--preview-text, #F4F2EE);
+}
+.preview-title em {
+  font-style: normal;
+  color: var(--preview-accent, #FF4E1A);
+}
+
+/* Decorative corner badge */
+.preview-badge {
+  position: absolute; top: 1.4rem; right: 1.4rem;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.35rem 0.75rem; border-radius: 100px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+  backdrop-filter: blur(8px);
+}
+
+/* Preview decorative elements */
+.preview-bars {
+  position: absolute; bottom: 0; right: 1.5rem;
+  display: flex; gap: 4px; align-items: flex-end;
+  height: 80px; opacity: 0.15;
+}
+.preview-bar {
+  width: 6px; border-radius: 3px 3px 0 0;
+  background: var(--preview-accent, #FF4E1A);
+}
+
+.preview-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.preview-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+/* ── CARD INFO ── */
+.card-info {
+  padding: 1.6rem 2rem 2rem;
+  flex: 1; display: flex; flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+.card-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+.card-name {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em;
+}
+.card-year {
+  font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em;
+}
+.card-sub {
+  font-size: 0.82rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5;
+}
+.card-tags {
+  display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem;
+}
+.card-tag {
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--muted); border: 1px solid var(--border);
+  padding: 0.2rem 0.55rem; border-radius: 4px;
+}
+.card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: auto;
+}
+.card-type {
+  font-size: 0.7rem; color: var(--muted);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.card-arrow {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; color: var(--muted);
+  transition: transform 0.2s, border-color 0.2s, color 0.2s, background 0.2s;
+}
+.project-card:hover .card-arrow {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: rgba(255,78,26,0.08);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .project-grid { grid-template-columns: 1fr 1fr; }
+  .project-card.featured { grid-column: span 2; }
+  .project-card:nth-child(3n) { border-right: 1.5px solid var(--border); }
+  .project-card:nth-child(2n) { border-right: none; }
+}
+@media (max-width: 600px) {
+  .project-grid { grid-template-columns: 1fr; }
+  .project-card.featured, .project-card { grid-column: span 1; border-right: none; }
+  header { padding: 3rem 5% 2rem; }
+  .grid-wrap { padding: 2rem 5% 4rem; }
+  .filters { padding: 1.2rem 5%; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-eyebrow">Design portfolio</div>
+    <h1>Alle <span>projecten</span></h1>
+    <p class="header-sub">Een overzicht van alle websites en concepten. Klik op een project om het te openen.</p>
+    <div class="header-count" aria-hidden="true">21</div>
+  </div>
+</header>
+
+<div class="filters">
+  <div class="filters-inner">
+    <button class="filter-btn active" data-filter="all">Alles</button>
+    <button class="filter-btn" data-filter="marketing">Marketing</button>
+    <button class="filter-btn" data-filter="ai">AI / Automation</button>
+    <button class="filter-btn" data-filter="retail">Retail</button>
+    <button class="filter-btn" data-filter="industrial">Industrial</button>
+    <button class="filter-btn" data-filter="agency">Agency / 3D</button>
+    <button class="filter-btn" data-filter="architecture">Architectuur</button>
+    <span class="filter-count" id="filter-count">9 projecten</span>
+  </div>
+</div>
+
+<div class="grid-wrap">
+  <div class="grid-inner">
+    <div class="project-grid" id="grid">
+
+      <!-- ── CAPTAR REACT ── -->
+      <article class="project-card featured" data-cat="marketing" data-url="captar-react/index.html">
+        <div class="card-preview" style="--preview-bg:#0A0908; --preview-accent:#FF4E1A; --preview-text:#F4F2EE">
+          <div class="preview-bg" style="background: linear-gradient(135deg, #0A0908 0%, #1A0A04 100%)">
+            <div class="preview-orb" style="width:300px;height:300px;top:-80px;right:-60px;background:radial-gradient(circle,rgba(255,78,26,0.2) 0%,transparent 70%)"></div>
+            <div class="preview-grid"></div>
+            <div class="preview-bars">
+              <div class="preview-bar" style="height:45%"></div>
+              <div class="preview-bar" style="height:70%"></div>
+              <div class="preview-bar" style="height:55%"></div>
+              <div class="preview-bar" style="height:90%"></div>
+              <div class="preview-bar" style="height:65%"></div>
+              <div class="preview-bar" style="height:80%"></div>
+            </div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Sales-ready marketing</span>
+            <div class="preview-title">MEER<br><em>LEADS.</em></div>
+          </div>
+          <span class="preview-badge">React + Vite</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Captar — React Homepage</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">B2B sales & marketing bureau. Fancy animaties: char-reveal, live pipeline counter, mouse parallax, orbs.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span>
+            <span class="card-tag">Vite</span>
+            <span class="card-tag">Tailwind v4</span>
+            <span class="card-tag">Animaties</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Marketing & Sales</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── CAPTAR v1 ── -->
+      <article class="project-card" data-cat="marketing" data-url="captar.html">
+        <div class="card-preview" style="--preview-bg:#0B0F1C; --preview-accent:#FF5B2E; --preview-text:#fff">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#0B0F1C 0%,#0D1525 100%)">
+            <div class="preview-orb" style="width:180px;height:180px;top:-30px;left:-30px;background:radial-gradient(circle,rgba(61,126,255,0.18) 0%,transparent 70%)"></div>
+            <div class="preview-orb" style="width:140px;height:140px;bottom:-20px;right:-20px;background:radial-gradient(circle,rgba(255,91,46,0.15) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Sales-ready marketing</span>
+            <div class="preview-title">Meer<br><em>leads.</em></div>
+          </div>
+          <span class="preview-badge">HTML v1</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Captar — Concept v1</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Eerste HTML concept. Dark navy met oranje + blauw. Syne + Manrope typografie.</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span>
+            <span class="card-tag">CSS</span>
+            <span class="card-tag">Syne</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Marketing & Sales</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── CAPTAR v2 ── -->
+      <article class="project-card" data-cat="marketing" data-url="captar2.html">
+        <div class="card-preview" style="--preview-bg:#EDE8DC; --preview-accent:#C2F03A; --preview-text:#0D1117">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#EDE8DC 0%,#F7F5F0 100%)">
+            <div class="preview-orb" style="width:200px;height:200px;top:-40px;right:-40px;background:radial-gradient(circle,rgba(194,240,58,0.25) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag" style="color:#0D1117;opacity:0.5">Sales-ready marketing</span>
+            <div class="preview-title" style="color:#0D1117;font-style:italic">Meer<br><em style="color:#0D1117;font-weight:900">leads.</em></div>
+          </div>
+          <span class="preview-badge" style="background:rgba(0,0,0,0.07);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.45)">HTML v2</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Captar — Concept v2</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Warm cream achtergrond met lime-groen accent. Fraunces (serif) + Urbanist — editorial & organisch.</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span>
+            <span class="card-tag">CSS</span>
+            <span class="card-tag">Fraunces</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Marketing & Sales</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── CAPTAR v3 ── -->
+      <article class="project-card" data-cat="marketing" data-url="captar3.html">
+        <div class="card-preview" style="--preview-bg:#1B0A2E; --preview-accent:#00EFA0; --preview-text:#F0E7D8">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#1B0A2E 0%,#2A1048 100%)">
+            <div class="preview-orb" style="width:220px;height:220px;top:-50px;right:-50px;background:radial-gradient(circle,rgba(0,239,160,0.15) 0%,transparent 70%)"></div>
+            <div class="preview-grid"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Sales-ready marketing</span>
+            <div class="preview-title">Meer<br><em>leads.</em></div>
+          </div>
+          <span class="preview-badge">HTML v3</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Captar — Concept v3</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Donkerpaars met mint/groen accent. Fraunces + Urbanist. Meest uitgesproken kleurpalet van de reeks.</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span>
+            <span class="card-tag">CSS</span>
+            <span class="card-tag">Fraunces</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Marketing & Sales</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── CAPTAR v4 ── -->
+      <article class="project-card" data-cat="marketing" data-url="captar4.html">
+        <div class="card-preview" style="--preview-bg:#0B0F1C; --preview-accent:#FF5B2E; --preview-text:#fff">
+          <div class="preview-bg" style="background: linear-gradient(135deg, #0B0F1C 0%, #0D1A2E 100%)">
+            <div class="preview-orb" style="width:200px;height:200px;top:-30px;right:-30px;background:radial-gradient(circle,rgba(61,126,255,0.15) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Sales-ready marketing</span>
+            <div class="preview-title">cap<em>tar</em></div>
+          </div>
+          <span class="preview-badge">HTML v4</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Captar — Concept v4</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Meest recente statische HTML versie. Dark navy met oranje en blauw accent.</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span>
+            <span class="card-tag">CSS</span>
+            <span class="card-tag">Vanilla JS</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Marketing & Sales</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── KOLIA ── -->
+      <article class="project-card featured" data-cat="ai" data-url="kolia/index.html" data-external="true">
+        <div class="card-preview" style="--preview-bg:#FDFAF6; --preview-accent:#2D5A3D; --preview-text:#1A1714">
+          <div class="preview-bg" style="background: #FDFAF6">
+            <div class="preview-orb" style="width:250px;height:250px;top:-50px;right:-50px;background:radial-gradient(circle,rgba(45,90,61,0.12) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag" style="color:#B85C2A">AI / Automation</span>
+            <div class="preview-title" style="color:#1A1714">Kol<em style="color:#2D5A3D">ia</em><br><span style="font-size:0.55em;font-weight:600;color:#6B6560;letter-spacing:0.02em">Digitale collega's</span></div>
+          </div>
+          <span class="preview-badge" style="background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.45)">7 pagina's</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Kolia — Multi-page website</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">7 pagina's voor AI automation bureau. Warm cream design, fancy scroll-animaties, custom cursor.</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span>
+            <span class="card-tag">CSS</span>
+            <span class="card-tag">animations.js</span>
+            <span class="card-tag">7 pagina's</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">AI & Automation</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── PLANTENWINKEL ── -->
+      <article class="project-card" data-cat="retail" data-url="plantenwinkel.html">
+        <div class="card-preview" style="--preview-bg:#F7FAF6; --preview-accent:#2D6A4F; --preview-text:#1A2E1A">
+          <div class="preview-bg" style="background: linear-gradient(160deg, #F7FAF6 0%, #ECF4E9 100%)">
+            <div class="preview-orb" style="width:200px;height:200px;bottom:-40px;left:-40px;background:radial-gradient(circle,rgba(45,106,79,0.15) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag" style="color:#40916C">Plantenwinkel</span>
+            <div class="preview-title" style="color:#2D6A4F;font-style:italic">Groen<br>&amp; Goed</div>
+          </div>
+          <span class="preview-badge" style="background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.08);color:rgba(0,0,0,0.4)">Retail</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Groen & Goed</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Plantenwinkel webshop concept. Licht en organisch design met Cormorant Garamond typografie.</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span>
+            <span class="card-tag">CSS</span>
+            <span class="card-tag">E-commerce</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Retail & E-commerce</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── IRONFORGE ── -->
+      <article class="project-card" data-cat="industrial" data-url="ironforge-metals.html">
+        <div class="card-preview" style="--preview-bg:#0D0D0D; --preview-accent:#E87B2E; --preview-text:#F0EDE8">
+          <div class="preview-bg" style="background: linear-gradient(135deg, #0D0D0D 0%, #1A1208 100%)">
+            <div class="preview-orb" style="width:180px;height:180px;top:-40px;right:-20px;background:radial-gradient(circle,rgba(232,123,46,0.12) 0%,transparent 70%)"></div>
+            <div class="preview-grid"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Precision Metal Processing</span>
+            <div class="preview-title">IRON<em>FORGE</em></div>
+          </div>
+          <span class="preview-badge">Industrial</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Ironforge Metals</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Industriële website voor metaalverwerking. Donker, strak en bold — "Forging the Future of Industry".</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span>
+            <span class="card-tag">CSS</span>
+            <span class="card-tag">Industrial</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Industrial</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── METAALCRAFT ── -->
+      <article class="project-card" data-cat="industrial" data-url="metaalcraft/index.html">
+        <div class="card-preview" style="--preview-bg:#0F1117; --preview-accent:#60A5FA; --preview-text:#fff">
+          <div class="preview-bg" style="background: linear-gradient(135deg, #0F1117 0%, #151B2E 100%)">
+            <div class="preview-orb" style="width:200px;height:200px;bottom:-30px;left:-30px;background:radial-gradient(circle,rgba(96,165,250,0.1) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Metaalverwerking</span>
+            <div class="preview-title">Metaal<em>Craft</em></div>
+          </div>
+          <span class="preview-badge">HTML/CSS</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">MetaalCraft</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Statisch HTML concept voor metaalverwerkingsbedrijf. Inter + Space Grotesk, dark steel look.</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span>
+            <span class="card-tag">CSS</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Industrial</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── METAL VARIANT A ── -->
+      <article class="project-card" data-cat="industrial" data-url="metal-variant-a/index.html">
+        <div class="card-preview" style="--preview-bg:#0A0F14; --preview-accent:#FF6B35; --preview-text:#E8E0D8">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#0A0F14 0%,#12181F 100%)">
+            <div class="preview-orb" style="width:160px;height:160px;top:-20px;right:-20px;background:radial-gradient(circle,rgba(255,107,53,0.12) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Metal Variant A</span>
+            <div class="preview-title">Steel &amp;<br><em>Precision</em></div>
+          </div>
+          <span class="preview-badge">React</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Metal Variant A</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">React Vite concept voor metaalverwerking. Variant A van drie stijlrichtingen.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span>
+            <span class="card-tag">Vite</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Industrial</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── METAL VARIANT B ── -->
+      <article class="project-card" data-cat="industrial" data-url="metal-variant-b/index.html">
+        <div class="card-preview" style="--preview-bg:#0C0C0C; --preview-accent:#C8A96E; --preview-text:#F0EAE0">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#0C0C0C 0%,#1A1410 100%)">
+            <div class="preview-orb" style="width:160px;height:160px;bottom:-20px;right:-20px;background:radial-gradient(circle,rgba(200,169,110,0.12) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Metal Variant B</span>
+            <div class="preview-title">Premium<br><em>Metal</em></div>
+          </div>
+          <span class="preview-badge">React</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Metal Variant B</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Luxe gold/amber variant — premium positionering voor metaalverwerking.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span>
+            <span class="card-tag">Vite</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Industrial</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── METAL VARIANT C ── -->
+      <article class="project-card" data-cat="industrial" data-url="metal-variant-c/index.html">
+        <div class="card-preview" style="--preview-bg:#F4F4F2; --preview-accent:#1A1A1A; --preview-text:#1A1A1A">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#F4F4F2 0%,#E8E8E4 100%)">
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag" style="color:#666">Metal Variant C</span>
+            <div class="preview-title" style="color:#1A1A1A">Light<br><em style="color:#333">Industrial</em></div>
+          </div>
+          <span class="preview-badge" style="background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.45)">React</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Metal Variant C</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Lichte variant — clean en minimaal design voor metaalverwerking. Wit/grijs palet.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span>
+            <span class="card-tag">Vite</span>
+          </div>
+          <div class="card-footer">
+            <span class="card-type">Industrial</span>
+            <span class="card-arrow">→</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- ── AGENCY 3D SITE (AXIS/AI) ── -->
+      <article class="project-card featured" data-cat="agency" data-url="agency-3d-site/index.html">
+        <div class="card-preview" style="--preview-bg:#050812; --preview-accent:#4CC9F0; --preview-text:#fff">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#050812 0%,#0A0F24 100%)">
+            <div class="preview-orb" style="width:280px;height:280px;top:-80px;right:-60px;background:radial-gradient(circle,rgba(76,201,240,0.15) 0%,transparent 70%)"></div>
+            <div class="preview-grid"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">3D Agency Demo</span>
+            <div class="preview-title">AXIS<em>/AI</em></div>
+          </div>
+          <span class="preview-badge">React + Three.js</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">AXIS/AI — 3D Agency</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Premium multi-page 3D agency demo. React + Tailwind + Three.js. Enterprise-stijl met sterke 3D aanwezigheid.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span><span class="card-tag">Three.js</span><span class="card-tag">Tailwind</span><span class="card-tag">3D</span>
+          </div>
+          <div class="card-footer"><span class="card-type">Agency / 3D</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+      <!-- ── ORBITAL AGENCY v2 ── -->
+      <article class="project-card" data-cat="agency" data-url="agency-3d-site-v2/index.html">
+        <div class="card-preview" style="--preview-bg:#030612; --preview-accent:#7B5CF0; --preview-text:#fff">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#030612 0%,#080B1E 100%)">
+            <div class="preview-orb" style="width:200px;height:200px;top:-40px;right:-40px;background:radial-gradient(circle,rgba(123,92,240,0.2) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">3D Narrative</span>
+            <div class="preview-title">Orbital<br><em>Agency</em></div>
+          </div>
+          <span class="preview-badge">React + Three.js</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Orbital Agency — v2</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Multi-page 3D narrative site voor AI automation agency. Storytelling-arc over meerdere routes.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span><span class="card-tag">Three.js</span><span class="card-tag">3D</span>
+          </div>
+          <div class="card-footer"><span class="card-type">Agency / 3D</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+      <!-- ── AGENCY 3D v2-ALT ── -->
+      <article class="project-card" data-cat="agency" data-url="agency-3d-site-v2-alt/index.html">
+        <div class="card-preview" style="--preview-bg:#07090D; --preview-accent:#00F5A0; --preview-text:#fff">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#07090D 0%,#0C1018 100%)">
+            <div class="preview-orb" style="width:200px;height:200px;bottom:-30px;left:-30px;background:radial-gradient(circle,rgba(0,245,160,0.12) 0%,transparent 70%)"></div>
+            <div class="preview-grid"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Agency 3D</span>
+            <div class="preview-title">Agency<br><em>Alt</em></div>
+          </div>
+          <span class="preview-badge">React + Three.js</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Agency 3D — Alt variant</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Alternatieve stijlrichting van de 3D agency site. Three.js + postprocessing effecten.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span><span class="card-tag">Three.js</span><span class="card-tag">Postprocessing</span>
+          </div>
+          <div class="card-footer"><span class="card-type">Agency / 3D</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+      <!-- ── PHASE 4 ── -->
+      <article class="project-card" data-cat="ai" data-url="phase4-v1-site/index.html">
+        <div class="card-preview" style="--preview-bg:#08070F; --preview-accent:#FF3CAC; --preview-text:#fff">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#08070F 0%,#110F1E 100%)">
+            <div class="preview-orb" style="width:200px;height:200px;top:-40px;right:-20px;background:radial-gradient(circle,rgba(255,60,172,0.15) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">AI Sales & Ops</span>
+            <div class="preview-title">Phase <em>4</em></div>
+          </div>
+          <span class="preview-badge">React</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Phase 4 — Landing Site</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">One-page landing voor AI sales & ops automation bureau, gericht op Belgische KMO's.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span><span class="card-tag">Vite</span><span class="card-tag">Landing</span>
+          </div>
+          <div class="card-footer"><span class="card-type">AI & Automation</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+      <!-- ── VORM (arch-react) ── -->
+      <article class="project-card" data-cat="architecture" data-url="arch-react/index.html">
+        <div class="card-preview" style="--preview-bg:#07090D; --preview-accent:#4CC9F0; --preview-text:#E9EEF7">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#07090D 0%,#0D1117 100%)">
+            <div class="preview-orb" style="width:220px;height:220px;top:-50px;right:-40px;background:radial-gradient(circle,rgba(76,201,240,0.1) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Architecten</span>
+            <div class="preview-title" style="font-style:italic">VORM</div>
+          </div>
+          <span class="preview-badge">React</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">VORM — Architecten (React)</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">React versie van het VORM architectenbureau concept. Donker, minimaal, elegant.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span><span class="card-tag">Tailwind</span>
+          </div>
+          <div class="card-footer"><span class="card-type">Architectuur</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+      <!-- ── VORM (arch-design, static) ── -->
+      <article class="project-card" data-cat="architecture" data-url="arch-design/index.html">
+        <div class="card-preview" style="--preview-bg:#F8F5F0; --preview-accent:#1A1A1A; --preview-text:#1A1A1A">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#F8F5F0 0%,#EDE8DF 100%)">
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag" style="color:#999">Architecten</span>
+            <div class="preview-title" style="color:#1A1A1A;font-style:italic">VORM</div>
+          </div>
+          <span class="preview-badge" style="background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.4)">HTML/CSS</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">VORM — Architecten (HTML)</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Statische HTML versie van het VORM architectenbureau. Licht, warm, Cormorant Garamond.</p>
+          <div class="card-tags">
+            <span class="card-tag">HTML</span><span class="card-tag">CSS</span>
+          </div>
+          <div class="card-footer"><span class="card-type">Architectuur</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+      <!-- ── AUTO-CONCEPT A ── -->
+      <article class="project-card" data-cat="architecture" data-url="auto-concept-a/index.html">
+        <div class="card-preview" style="--preview-bg:#06070B; --preview-accent:#4CC9F0; --preview-text:#E9EEF7">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#06070B 0%,#0A0C14 100%)">
+            <div class="preview-orb" style="width:180px;height:180px;bottom:-20px;right:-20px;background:radial-gradient(circle,rgba(76,201,240,0.12) 0%,transparent 70%)"></div>
+            <div class="preview-grid"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Auto Concept A</span>
+            <div class="preview-title">VORM<br><em style="font-size:0.6em;font-weight:600">Concept A</em></div>
+          </div>
+          <span class="preview-badge">React</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Auto Concept A</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Eerste automatisch gegenereerde concept variant. Dark blue-black palet.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span><span class="card-tag">Tailwind</span>
+          </div>
+          <div class="card-footer"><span class="card-type">Architectuur</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+      <!-- ── AUTO-CONCEPT B ── -->
+      <article class="project-card" data-cat="architecture" data-url="auto-concept-b/index.html">
+        <div class="card-preview" style="--preview-bg:#111111; --preview-accent:#D4A853; --preview-text:#EEE7DD">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#111111 0%,#1A1510 100%)">
+            <div class="preview-orb" style="width:180px;height:180px;top:-30px;left:-30px;background:radial-gradient(circle,rgba(212,168,83,0.15) 0%,transparent 70%)"></div>
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag">Auto Concept B</span>
+            <div class="preview-title">VORM<br><em style="font-size:0.6em;font-weight:600">Concept B</em></div>
+          </div>
+          <span class="preview-badge">React</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Auto Concept B</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Tweede concept variant. Warm donker palet met goud/amber accent.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span><span class="card-tag">Tailwind</span>
+          </div>
+          <div class="card-footer"><span class="card-type">Architectuur</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+      <!-- ── AUTO-CONCEPT C ── -->
+      <article class="project-card" data-cat="architecture" data-url="auto-concept-c/index.html">
+        <div class="card-preview" style="--preview-bg:#F2F0EC; --preview-accent:#2C2C2C; --preview-text:#1A1A1A">
+          <div class="preview-bg" style="background:linear-gradient(135deg,#F2F0EC 0%,#E8E4DC 100%)">
+          </div>
+          <div class="preview-content">
+            <span class="preview-tag" style="color:#888">Auto Concept C</span>
+            <div class="preview-title" style="color:#1A1A1A">VORM<br><em style="font-size:0.6em;font-weight:600;color:#444">Concept C</em></div>
+          </div>
+          <span class="preview-badge" style="background:rgba(0,0,0,0.06);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.4)">React</span>
+        </div>
+        <div class="card-info">
+          <div class="card-top">
+            <span class="card-name">Auto Concept C</span>
+            <span class="card-year">2026</span>
+          </div>
+          <p class="card-sub">Derde concept variant. Licht, warm wit palet — clean en minimaal.</p>
+          <div class="card-tags">
+            <span class="card-tag">React</span><span class="card-tag">Tailwind</span>
+          </div>
+          <div class="card-footer"><span class="card-type">Architectuur</span><span class="card-arrow">→</span></div>
+        </div>
+      </article>
+
+    </div><!-- /grid -->
+  </div>
+</div>
+
+<script>
+  // ── Filter ──
+  const btns  = document.querySelectorAll('.filter-btn')
+  const cards = document.querySelectorAll('.project-card')
+  const count = document.getElementById('filter-count')
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'))
+      btn.classList.add('active')
+
+      const f = btn.dataset.filter
+      let visible = 0
+      cards.forEach(card => {
+        const show = f === 'all' || card.dataset.cat === f
+        card.classList.toggle('hidden', !show)
+        if (show) visible++
+      })
+      count.textContent = `${visible} project${visible !== 1 ? 'en' : ''}`
+    })
+  })
+
+  // ── Click to open ──
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const url = card.dataset.url
+      if (url) window.open(url, '_blank')
+    })
+  })
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60)
+        observer.unobserve(entry.target)
+      }
+    })
+  }, { threshold: 0.08 })
+  cards.forEach(c => observer.observe(c))
+</script>
+</body>
+</html>

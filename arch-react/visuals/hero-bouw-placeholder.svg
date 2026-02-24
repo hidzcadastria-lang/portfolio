@@ -1,0 +1,23 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1600" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A222B"/>
+      <stop offset="1" stop-color="#0E1116"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="210" y1="140" x2="1320" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D39A43" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#D39A43" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#accent)"/>
+  <g opacity="0.22" stroke="#AAB5C2" stroke-width="1">
+    <path d="M0 90H1600"/><path d="M0 180H1600"/><path d="M0 270H1600"/><path d="M0 360H1600"/><path d="M0 450H1600"/><path d="M0 540H1600"/><path d="M0 630H1600"/><path d="M0 720H1600"/><path d="M0 810H1600"/>
+    <path d="M160 0V900"/><path d="M320 0V900"/><path d="M480 0V900"/><path d="M640 0V900"/><path d="M800 0V900"/><path d="M960 0V900"/><path d="M1120 0V900"/><path d="M1280 0V900"/><path d="M1440 0V900"/>
+  </g>
+  <rect x="830" y="190" width="520" height="420" rx="8" fill="#11161D" stroke="#D39A43" stroke-opacity="0.35"/>
+  <rect x="880" y="250" width="420" height="16" fill="#283240"/>
+  <rect x="880" y="282" width="360" height="16" fill="#283240"/>
+  <rect x="880" y="314" width="390" height="16" fill="#283240"/>
+  <text x="80" y="760" fill="#D39A43" font-family="Inter, Arial" font-size="22" letter-spacing="2">LEONARDO PLACEHOLDER • HERO VISUAL • BAUWONDERNEMING</text>
+</svg>

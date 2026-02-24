@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetaalCraft — Metaalverwerking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0a0b0f;--panel:#12141b;--line:#2a2f3a;--txt:#f2f4f8;--muted:#98a2b3;--acc:#f59e0b;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:Inter,sans-serif}
+    .container{width:min(1440px,calc(100% - 96px));margin-inline:auto}
+    .section{padding:112px 0}
+
+    nav{position:fixed;inset:0 0 auto 0;z-index:30;background:rgba(10,11,15,.82);backdrop-filter:blur(10px);border-bottom:1px solid #1f2430}
+    nav .container{height:78px;display:flex;align-items:center;justify-content:space-between}
+    .brand{font:700 22px "Space Grotesk",sans-serif;letter-spacing:.02em}
+    .links{display:flex;gap:32px}
+    .links a{color:#c8d0df;text-decoration:none;font-size:14px}
+    .btn{border:1px solid #4b5563;padding:10px 16px;border-radius:8px;color:var(--acc);text-decoration:none;font-size:12px;text-transform:uppercase;letter-spacing:.12em}
+
+    .hero{min-height:100vh;padding-top:78px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+    .hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 15%,rgba(245,158,11,.2),transparent 35%),linear-gradient(120deg,#0d111a,#0a0b0f 55%)}
+    .hero .container{position:relative;z-index:2;min-height:calc(100vh - 78px);display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:end;padding-bottom:88px}
+    .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin:0 0 18px}
+    h1{font:700 clamp(44px,6vw,88px) "Space Grotesk",sans-serif;line-height:.98;margin:0 0 20px}
+    .lead{max-width:640px;color:#cbd5e1;font-size:18px;line-height:1.75;margin:0 0 28px}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+    .hero-actions a{padding:13px 20px;border-radius:10px;text-decoration:none;font-weight:600}
+    .hero-actions .primary{background:var(--acc);color:#111827}
+    .hero-actions .ghost{border:1px solid #374151;color:#e5e7eb}
+    .facts{display:grid;gap:14px}
+    .fact{background:rgba(18,20,27,.9);border:1px solid #293040;border-radius:12px;padding:18px}
+    .fact .k{font-size:12px;color:#9ca3af;text-transform:uppercase;letter-spacing:.12em}
+    .fact .v{margin-top:8px;font:600 22px "Space Grotesk",sans-serif}
+
+    .stats{border-bottom:1px solid var(--line)}
+    .stats .container{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:34px 0}
+    .stat strong{display:block;color:var(--acc);font:700 48px "Space Grotesk",sans-serif;line-height:1}
+    .stat span{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+
+    h2{font:700 clamp(32px,4vw,56px) "Space Grotesk",sans-serif;margin:0}
+    .sub{margin-top:16px;color:#b8c1d1;line-height:1.8;font-size:17px;max-width:780px}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}
+    .card{border:1px solid #2a3140;border-radius:16px;background:var(--panel);overflow:hidden}
+    .thumb{aspect-ratio:16/10;background:linear-gradient(140deg,#1b2230,#12141b)}
+    .body{padding:20px}
+    .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+    .title{margin:10px 0 8px;font:600 27px "Space Grotesk",sans-serif}
+    .text{color:#b5bece;line-height:1.75}
+
+    .process{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+    .step{padding:22px;border-radius:14px;border:1px solid #2d3545;background:#0f1219}
+    .step b{display:block;color:var(--acc);font-size:12px;margin-bottom:8px}
+
+    .cta{background:var(--acc);padding:86px 0}
+    .cta .container{display:flex;justify-content:space-between;align-items:center;gap:24px}
+    .cta h3{margin:0;color:#0f172a;font:700 clamp(34px,4vw,58px) "Space Grotesk",sans-serif;max-width:900px}
+    .cta a{background:#0b1220;color:#f8fafc;text-decoration:none;padding:14px 20px;border-radius:10px;font-weight:600}
+
+    footer{border-top:1px solid var(--line);padding:54px 0 24px}
+    .foot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px}
+    .foot p,.foot a{color:#9ca3af;text-decoration:none;line-height:1.8}
+    .foot h4{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:#c0c7d4}
+
+    @media (max-width:1024px){
+      .container{width:min(1440px,calc(100% - 52px))}
+      .hero .container{grid-template-columns:1fr}
+      .cards,.process,.foot{grid-template-columns:1fr 1fr}
+      .stats .container{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:680px){
+      .container{width:min(1440px,calc(100% - 28px))}
+      .links,.btn{display:none}
+      .cards,.process,.foot{grid-template-columns:1fr}
+      .section{padding:80px 0}
+      .cta .container{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <div class="brand">METAALCRAFT</div>
+      <div class="links">
+        <a href="#diensten">Diensten</a><a href="#proces">Proces</a><a href="#projecten">Projecten</a><a href="#contact">Contact</a>
+      </div>
+      <a class="btn" href="#contact">Offerte</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div>
+        <p class="eyebrow">Metaalverwerking op industriële schaal</p>
+        <h1>Precisie in staal,<br>resultaat op tijd.</h1>
+        <p class="lead">Van plaatbewerking tot lasconstructies en montage: wij combineren vakmanschap met betrouwbare levertermijnen voor kmo en industrie.</p>
+        <div class="hero-actions">
+          <a class="primary" href="#projecten">Bekijk projecten</a>
+          <a class="ghost" href="#diensten">Onze diensten</a>
+        </div>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="k">Specialisatie</div><div class="v">Plooien, lassen, assemblage</div></div>
+        <div class="fact"><div class="k">Sectoren</div><div class="v">Machinebouw, infrastructuur, KMO</div></div>
+        <div class="fact"><div class="k">Regio</div><div class="v">België & Zuid-Nederland</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container">
+      <div class="stat"><strong>22</strong><span>jaar ervaring</span></div>
+      <div class="stat"><strong>430+</strong><span>projecten/jaar</span></div>
+      <div class="stat"><strong>72</strong><span>vakmensen</span></div>
+      <div class="stat"><strong>99%</strong><span>tijdige levering</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="diensten">
+    <div class="container">
+      <h2>Diensten voor metaalprojecten</h2>
+      <p class="sub">Eén partner voor productie, nabewerking en montage. Met heldere planning, kwaliteitscontrole en traceerbare opvolging per order.</p>
+      <div class="cards">
+        <article class="card"><div class="thumb"></div><div class="body"><div class="tag">Plaatbewerking</div><div class="title">Snijden & plooien</div><div class="text">Laser-, pons- en plooibewerkingen met strakke toleranties en consistente herhaalbaarheid.</div></div></article>
+        <article class="card"><div class="thumb"></div><div class="body"><div class="tag">Constructie</div><div class="title">Las- en framewerk</div><div class="text">MIG/TIG en samengestelde staalconstructies voor machinebouw en industriële toepassingen.</div></div></article>
+        <article class="card"><div class="thumb"></div><div class="body"><div class="tag">Afwerking</div><div class="title">Montage & assemblage</div><div class="text">Voorassemblage, controle en levering klaar voor integratie in jouw productielijn.</div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="proces" style="border-top:1px solid var(--line)">
+    <div class="container">
+      <h2>Ons proces</h2>
+      <p class="sub">Van technische intake tot levering op werf: we werken in korte, controleerbare fases zodat planning en kwaliteit voorspelbaar blijven.</p>
+      <div class="process">
+        <div class="step"><b>01 Intake</b>Technische analyse en haalbaarheid op basis van plannen en toleranties.</div>
+        <div class="step"><b>02 Engineering</b>Werkvoorbereiding, materiaalkeuze en productiefiche per onderdeel.</div>
+        <div class="step"><b>03 Productie</b>Bewerking, lassen en kwaliteitscontrole met meetrapportering.</div>
+        <div class="step"><b>04 Levering</b>Assemblage, verpakking en levering volgens afgesproken timing.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="projecten" style="border-top:1px solid var(--line)">
+    <div class="container">
+      <h2>Recente realisaties</h2>
+      <p class="sub">Een selectie van opdrachten voor industriële klanten, logistieke sites en machinebouwers.</p>
+      <div class="cards">
+        <article class="card"><div class="thumb"></div><div class="body"><div class="tag">Logistiek</div><div class="title">Dockframes Antwerpen</div><div class="text">Serieproductie en montage van stalen dockframes voor een nieuw distributiecentrum.</div></div></article>
+        <article class="card"><div class="thumb"></div><div class="body"><div class="tag">Machinebouw</div><div class="title">Atlas Assemblies</div><div class="text">Constructie van modulaire basisframes met streng tolerantiekader.</div></div></article>
+        <article class="card"><div class="thumb"></div><div class="body"><div class="tag">Infrastructuur</div><div class="title">Brugcomponenten Leuven</div><div class="text">Fabricage van ondersteunende staalonderdelen met anticorrosie-afwerking.</div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contact">
+    <div class="container">
+      <h3>Klaar om je metaalproject professioneel op te starten?</h3>
+      <a href="mailto:hello@metaalcraft.be">Vraag een offerte</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot">
+      <div><div class="brand">METAALCRAFT</div><p>Industrieweg 18, 3000 Leuven<br>hello@metaalcraft.be<br>+32 16 00 00 00</p></div>
+      <div><h4>Links</h4><p><a href="#diensten">Diensten</a><br><a href="#proces">Proces</a><br><a href="#projecten">Projecten</a></p></div>
+      <div><h4>Kwaliteit</h4><p>ISO-georiënteerde workflows<br>Volledige traceerbaarheid<br>Projectrapportering per fase</p></div>
+    </div>
+  </footer>
+</body>
+</html>

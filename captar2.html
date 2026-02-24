@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captar — Sales-ready marketing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,700;9..144,0,900;9..144,1,300;9..144,1,700;9..144,1,900&family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --cream:   #EDE8DC;
+            --dark:    #0D1117;
+            --lime:    #C2F03A;
+            --white:   #FFFFFF;
+            --ink:     #0D1117;
+            --gray:    #7B8099;
+            --light:   #F7F5F0;
+            --fh:      'Fraunces', serif;
+            --fu:      'Urbanist', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--fu); background: var(--white); color: var(--ink); overflow-x: hidden; }
+
+        /* ── FIXED NAV ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 6%;
+            mix-blend-mode: difference;
+        }
+        .logo-nav {
+            font-family: var(--fh); font-weight: 900; font-size: 1.3rem;
+            letter-spacing: -0.03em; color: var(--white); text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a {
+            font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em;
+            text-transform: uppercase; color: var(--white); text-decoration: none;
+            opacity: 0.7; transition: opacity .2s;
+        }
+        .nav-links a:hover { opacity: 1; }
+        .nav-links .n-cta {
+            background: var(--white); color: var(--dark) !important;
+            padding: 0.5rem 1.2rem; border-radius: 4px; opacity: 1 !important;
+            font-weight: 600 !important;
+        }
+
+        /* ── HERO SPLIT ── */
+        .hero {
+            display: grid; grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+            position: relative; overflow: hidden;
+        }
+
+        .hero-half {
+            padding: 7.5rem 8% 4.5rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .h-cream { background: var(--cream); }
+        .h-dark  { background: var(--dark); }
+
+        .half-eyebrow {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+        .h-cream .half-eyebrow { color: rgba(13,17,23,0.45); }
+        .h-dark  .half-eyebrow { color: rgba(255,255,255,0.35); }
+
+        .half-bottom { }
+        .half-stat {
+            font-family: var(--fh); font-weight: 900;
+            font-size: clamp(3.5rem, 6vw, 5.5rem);
+            line-height: 1; letter-spacing: -0.04em;
+        }
+        .h-cream .half-stat { color: var(--ink); }
+        .h-dark  .half-stat { color: var(--white); }
+
+        .half-stat sup {
+            font-size: 0.45em; vertical-align: super;
+        }
+        .h-dark .half-stat sup { color: var(--lime); }
+        .h-cream .half-stat sup { color: rgba(13,17,23,0.4); }
+
+        .half-stat-label {
+            font-size: 0.85rem; font-weight: 300; margin-top: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+        .h-cream .half-stat-label { color: rgba(13,17,23,0.55); }
+        .h-dark  .half-stat-label { color: rgba(255,255,255,0.45); }
+
+        .half-divider {
+            width: 40px; height: 1px; margin: 1.8rem 0;
+        }
+        .h-cream .half-divider { background: rgba(13,17,23,0.2); }
+        .h-dark  .half-divider { background: rgba(255,255,255,0.2); }
+
+        .half-tags {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+        }
+        .tag {
+            font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em;
+            padding: 0.3rem 0.7rem; border-radius: 3px;
+        }
+        .h-cream .tag {
+            background: rgba(13,17,23,0.07);
+            color: rgba(13,17,23,0.6);
+        }
+        .h-dark .tag {
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ── THE BIG WORD ── */
+        .hero-word-wrap {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: none; z-index: 10;
+        }
+        .hero-word {
+            font-family: var(--fh);
+            font-size: 20.5vw;
+            font-weight: 900;
+            letter-spacing: -0.06em;
+            line-height: 0.88;
+            color: var(--white);
+            mix-blend-mode: difference;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        /* ── SCROLL CARET ── */
+        .hero-scroll {
+            position: absolute; bottom: 2rem; left: 50%;
+            transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            z-index: 5; opacity: 0; animation: appear 1s 1.2s forwards;
+        }
+        .hero-scroll span {
+            font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em;
+            text-transform: uppercase; color: var(--white);
+            mix-blend-mode: difference;
+        }
+        .hero-scroll-line {
+            width: 1px; height: 36px;
+            background: var(--white);
+            mix-blend-mode: difference;
+            animation: lineScroll 2s ease-in-out infinite;
+        }
+        @keyframes lineScroll {
+            0%, 100% { transform: scaleY(1) translateY(0); opacity: 1; }
+            50% { transform: scaleY(0.6) translateY(7px); opacity: 0.4; }
+        }
+        @keyframes appear {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        /* ── INTRO STATEMENT ── */
+        .intro {
+            background: var(--white);
+            padding: 7rem 8%;
+            border-bottom: 1px solid rgba(13,17,23,0.08);
+        }
+        .intro-inner {
+            max-width: 1100px;
+        }
+        .intro-pre {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--gray);
+            margin-bottom: 2rem;
+            opacity: 0; transform: translateY(16px);
+            transition: all .6s;
+        }
+        .intro-pre.in { opacity: 1; transform: translateY(0); }
+
+        .intro-text {
+            font-family: var(--fh);
+            font-size: clamp(2.2rem, 4.5vw, 4rem);
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.2;
+            color: var(--ink);
+            opacity: 0; transform: translateY(24px);
+            transition: all .7s .1s;
+        }
+        .intro-text.in { opacity: 1; transform: translateY(0); }
+        .intro-text strong {
+            font-style: normal; font-weight: 900;
+            background: var(--lime);
+            padding: 0 0.15em;
+        }
+
+        /* ── SERVICES LIST ── */
+        .services {
+            background: var(--white);
+            padding: 0 8% 6rem;
+        }
+        .services-top {
+            display: flex; justify-content: space-between; align-items: baseline;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(13,17,23,0.1);
+            margin-bottom: 0;
+        }
+        .s-pre {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--gray);
+        }
+        .s-count {
+            font-family: var(--fh); font-size: 0.9rem; font-weight: 700;
+            color: rgba(13,17,23,0.25);
+        }
+
+        .service-row {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            align-items: center;
+            padding: 1.8rem 0;
+            border-bottom: 1px solid rgba(13,17,23,0.07);
+            cursor: pointer;
+            transition: background .25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-row::before {
+            content: '';
+            position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+            background: var(--lime);
+            transition: width .35s ease;
+            z-index: 0;
+        }
+        .service-row:hover::before { width: 5px; }
+
+        .service-row > * { position: relative; z-index: 1; }
+
+        .srv-num {
+            font-family: var(--fh);
+            font-size: 0.85rem; font-weight: 700;
+            color: rgba(13,17,23,0.2);
+            letter-spacing: 0.05em;
+        }
+
+        .srv-name {
+            font-family: var(--fh);
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--ink);
+            transition: color .25s;
+        }
+        .service-row:hover .srv-name { color: var(--ink); }
+
+        .srv-desc {
+            font-size: 0.82rem; font-weight: 300;
+            color: var(--gray); margin-top: 0.3rem;
+            max-width: 400px;
+        }
+
+        .srv-arrow {
+            width: 44px; height: 44px;
+            border: 1px solid rgba(13,17,23,0.15);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: all .3s;
+            color: var(--ink);
+        }
+        .service-row:hover .srv-arrow {
+            background: var(--lime);
+            border-color: var(--lime);
+            transform: rotate(-45deg);
+        }
+        .srv-arrow svg { width: 18px; height: 18px; }
+
+        /* ── NUMBERS BAND ── */
+        .numbers-band {
+            background: var(--dark);
+            padding: 5rem 8%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .num-item { }
+        .num-val {
+            font-family: var(--fh);
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: var(--white);
+            line-height: 1;
+            display: block;
+        }
+        .num-val em { font-style: normal; color: var(--lime); }
+        .num-lbl {
+            font-size: 0.83rem; font-weight: 300;
+            color: rgba(255,255,255,0.45);
+            margin-top: 0.6rem; line-height: 1.5;
+        }
+        .num-divider {
+            width: 28px; height: 2px; background: var(--lime);
+            margin-bottom: 1.2rem;
+        }
+
+        /* ── MANIFESTO ── */
+        .manifesto {
+            background: var(--light);
+            padding: 6rem 8%;
+            position: relative; overflow: hidden;
+        }
+        .manifesto-label {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--gray);
+            margin-bottom: 3rem;
+            opacity: 0; transform: translateY(16px);
+            transition: all .5s;
+        }
+        .manifesto-label.in { opacity: 1; transform: translateY(0); }
+
+        .manifesto-quote {
+            font-family: var(--fh);
+            font-size: clamp(2.8rem, 5.5vw, 5rem);
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.15;
+            color: var(--ink);
+            max-width: 1000px;
+            opacity: 0; transform: translateY(30px);
+            transition: all .7s .1s;
+        }
+        .manifesto-quote.in { opacity: 1; transform: translateY(0); }
+        .manifesto-quote span { color: rgba(13,17,23,0.25); }
+
+        .manifesto-who {
+            display: flex; align-items: center; gap: 1rem;
+            margin-top: 3rem;
+            opacity: 0; transition: all .6s .3s;
+        }
+        .manifesto-who.in { opacity: 1; }
+        .manifesto-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--dark);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--fh); font-size: 1rem; font-weight: 900;
+            color: var(--lime);
+        }
+        .manifesto-name {
+            font-size: 0.85rem; font-weight: 600; color: var(--ink);
+        }
+        .manifesto-role {
+            font-size: 0.78rem; font-weight: 300; color: var(--gray);
+        }
+
+        .manifesto-deco {
+            position: absolute;
+            bottom: -2rem; right: 5%;
+            font-family: var(--fh);
+            font-size: 30vw; font-weight: 900; font-style: italic;
+            color: rgba(13,17,23,0.03);
+            line-height: 1;
+            pointer-events: none; user-select: none;
+        }
+
+        /* ── APPROACH ── */
+        .approach {
+            background: var(--white);
+            padding: 6rem 8%;
+        }
+        .approach-header {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 4rem; align-items: end;
+            margin-bottom: 4rem;
+        }
+        .approach-h {
+            font-family: var(--fh);
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.05; color: var(--ink);
+        }
+        .approach-sub {
+            font-size: 0.95rem; font-weight: 300; line-height: 1.8;
+            color: var(--gray);
+        }
+
+        .approach-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        .ap-card {
+            background: var(--light);
+            padding: 2.5rem;
+            transition: background .3s;
+        }
+        .ap-card:hover { background: var(--lime); }
+        .ap-card:hover .ap-n, .ap-card:hover .ap-title,
+        .ap-card:hover .ap-p { color: var(--ink); }
+
+        .ap-n {
+            font-family: var(--fh); font-size: 3rem; font-weight: 900;
+            letter-spacing: -0.05em; line-height: 1;
+            color: rgba(13,17,23,0.12); margin-bottom: 1.5rem;
+            transition: color .3s;
+        }
+        .ap-title {
+            font-family: var(--fh); font-size: 1.3rem; font-weight: 700;
+            color: var(--ink); margin-bottom: 0.7rem;
+            transition: color .3s;
+        }
+        .ap-p {
+            font-size: 0.85rem; font-weight: 300; line-height: 1.75;
+            color: var(--gray); transition: color .3s;
+        }
+
+        /* ── CTA SECTION ── */
+        .cta-wrap {
+            background: var(--lime);
+            padding: 6rem 8%;
+            display: grid; grid-template-columns: 1fr auto;
+            align-items: center; gap: 3rem;
+        }
+        .cta-left { }
+        .cta-pre {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: rgba(13,17,23,0.5);
+            margin-bottom: 1rem;
+        }
+        .cta-h {
+            font-family: var(--fh);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            letter-spacing: -0.04em; line-height: 1.05;
+            color: var(--ink);
+        }
+        .cta-sub {
+            font-size: 0.95rem; font-weight: 300; line-height: 1.7;
+            color: rgba(13,17,23,0.6); margin-top: 1rem;
+            max-width: 500px;
+        }
+        .cta-right {
+            display: flex; flex-direction: column; gap: 1rem;
+            align-items: flex-start;
+        }
+        .btn-dark {
+            background: var(--ink); color: var(--white);
+            padding: 1rem 2.2rem; border-radius: 4px;
+            font-family: var(--fu); font-size: 0.9rem; font-weight: 600;
+            text-decoration: none; white-space: nowrap;
+            transition: all .3s; display: inline-block;
+        }
+        .btn-dark:hover { background: #1e2736; }
+        .btn-ghost-dark {
+            color: rgba(13,17,23,0.6);
+            font-size: 0.85rem; font-weight: 500;
+            text-decoration: none; letter-spacing: 0.05em;
+            display: flex; align-items: center; gap: 0.4rem;
+            transition: color .25s;
+        }
+        .btn-ghost-dark:hover { color: var(--ink); }
+        .btn-ghost-dark svg { width: 16px; height: 16px; transition: transform .25s; }
+        .btn-ghost-dark:hover svg { transform: translateX(4px); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark);
+            padding: 5rem 8% 2.5rem;
+        }
+        .footer-top {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem; padding-bottom: 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .footer-logo {
+            font-family: var(--fh); font-size: 2rem; font-weight: 900;
+            letter-spacing: -0.04em; color: var(--white);
+            text-decoration: none; display: block; margin-bottom: 1rem;
+        }
+        .footer-logo em { font-style: normal; color: var(--lime); }
+        .footer-about {
+            font-size: 0.84rem; font-weight: 300; line-height: 1.8;
+            color: rgba(255,255,255,0.4); max-width: 260px;
+        }
+        .footer-col h5 {
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase; color: rgba(255,255,255,0.3);
+            margin-bottom: 1.4rem;
+        }
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+        .footer-col a {
+            font-size: 0.84rem; font-weight: 300;
+            color: rgba(255,255,255,0.45); text-decoration: none;
+            transition: color .25s;
+        }
+        .footer-col a:hover { color: var(--lime); }
+        .footer-bottom {
+            padding-top: 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.75rem; color: rgba(255,255,255,0.25);
+        }
+        .footer-bottom a { color: var(--lime); text-decoration: none; }
+
+        /* ── REVEAL ── */
+        .reveal {
+            opacity: 0; transform: translateY(28px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+        .reveal.in { opacity: 1; transform: translateY(0); }
+        .reveal-d1 { transition-delay: .1s; }
+        .reveal-d2 { transition-delay: .2s; }
+        .reveal-d3 { transition-delay: .3s; }
+    </style>
+</head>
+<body>
+
+<!-- FIXED NAV (mix-blend-mode: difference) -->
+<nav>
+    <a href="#" class="logo-nav">Captar</a>
+    <ul class="nav-links">
+        <li><a href="#diensten">Diensten</a></li>
+        <li><a href="#aanpak">Aanpak</a></li>
+        <li><a href="#">Referenties</a></li>
+        <li><a href="#">Nieuws</a></li>
+        <li><a href="#" class="n-cta">Plan een gesprek</a></li>
+    </ul>
+</nav>
+
+<!-- HERO — SPLIT SCREEN -->
+<section class="hero">
+
+    <!-- LEFT: Cream / Marketing -->
+    <div class="hero-half h-cream">
+        <div class="half-top">
+            <span class="half-eyebrow">Marketing</span>
+        </div>
+        <div class="half-bottom">
+            <div class="half-stat">200<sup>+</sup></div>
+            <div class="half-stat-label">B2B-klanten succesvol geholpen</div>
+            <div class="half-divider"></div>
+            <div class="half-tags">
+                <span class="tag">Digital Marketing</span>
+                <span class="tag">SEO &amp; SEA</span>
+                <span class="tag">Social Media</span>
+                <span class="tag">Webdesign</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: Dark / Sales -->
+    <div class="hero-half h-dark">
+        <div class="half-top">
+            <span class="half-eyebrow">Sales</span>
+        </div>
+        <div class="half-bottom">
+            <div class="half-stat">34<sup>%</sup></div>
+            <div class="half-stat-label">meer leads gemiddeld na 6 maanden</div>
+            <div class="half-divider"></div>
+            <div class="half-tags">
+                <span class="tag">Business Development</span>
+                <span class="tag">Lead Generation</span>
+                <span class="tag">Interim Management</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERSIZED BRAND TEXT — mix-blend-mode: difference -->
+    <div class="hero-word-wrap">
+        <div class="hero-word">CAPTAR</div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="hero-scroll">
+        <div class="hero-scroll-line"></div>
+        <span>Scroll</span>
+    </div>
+
+</section>
+
+<!-- INTRO STATEMENT -->
+<section class="intro">
+    <div class="intro-inner">
+        <p class="intro-pre">Herk-de-Stad · Opgericht 2009 · B2B specialist</p>
+        <p class="intro-text">
+            Wij geloven dat marketing en sales
+            <strong>één geheel</strong> zijn —
+            niet twee losse afdelingen, maar één geïntegreerde motor die uw pipeline vult
+            <em>en</em> omzet genereert.
+        </p>
+    </div>
+</section>
+
+<!-- SERVICES — EDITORIAL LIST -->
+<section class="services" id="diensten">
+    <div class="services-top">
+        <span class="s-pre">Wat we doen</span>
+        <span class="s-count">06 diensten</span>
+    </div>
+
+    <div class="service-row reveal">
+        <div class="srv-num">01</div>
+        <div>
+            <div class="srv-name">Digital Marketing</div>
+            <div class="srv-desc">Performance via Google, Meta &amp; LinkedIn — met AI-tools en automation voor maximaal rendement</div>
+        </div>
+        <div class="srv-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="service-row reveal reveal-d1">
+        <div class="srv-num">02</div>
+        <div>
+            <div class="srv-name">Business Development</div>
+            <div class="srv-desc">Presales-as-a-service — wij kwalificeren leads zodat uw salesteam enkel nog sluit</div>
+        </div>
+        <div class="srv-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="service-row reveal reveal-d2">
+        <div class="srv-num">03</div>
+        <div>
+            <div class="srv-name">Websites &amp; Conversie</div>
+            <div class="srv-desc">Responsieve websites die niet alleen mooi zijn — maar gebouwd voor conversie en lead generation</div>
+        </div>
+        <div class="srv-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="service-row reveal">
+        <div class="srv-num">04</div>
+        <div>
+            <div class="srv-name">Interim Management</div>
+            <div class="srv-desc">Onze experts stappen naadloos in uw team — tijdelijk, maar met blijvend resultaat</div>
+        </div>
+        <div class="srv-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="service-row reveal reveal-d1">
+        <div class="srv-num">05</div>
+        <div>
+            <div class="srv-name">Strategisch Advies</div>
+            <div class="srv-desc">Go-to-market, positionering, internationalisering — wij kijken mee op bestuursniveau</div>
+        </div>
+        <div class="srv-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="service-row reveal reveal-d2">
+        <div class="srv-num">06</div>
+        <div>
+            <div class="srv-name">Lead Generation</div>
+            <div class="srv-desc">Geautomatiseerde prospectie afgestemd op uw ideale klantprofiel — meer kansen, minder manueel werk</div>
+        </div>
+        <div class="srv-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<!-- NUMBERS BAND -->
+<div class="numbers-band">
+    <div class="num-item reveal">
+        <div class="num-divider"></div>
+        <span class="num-val">200<em>+</em></span>
+        <div class="num-lbl">klanten geholpen in<br>B2B en technische sectoren</div>
+    </div>
+    <div class="num-item reveal reveal-d1">
+        <div class="num-divider"></div>
+        <span class="num-val">34<em>%</em></span>
+        <div class="num-lbl">gemiddelde stijging<br>in conversieratio</div>
+    </div>
+    <div class="num-item reveal reveal-d2">
+        <div class="num-divider"></div>
+        <span class="num-val">15<em>+</em></span>
+        <div class="num-lbl">experts in marketing,<br>sales en strategie</div>
+    </div>
+    <div class="num-item reveal reveal-d3">
+        <div class="num-divider"></div>
+        <span class="num-val">17<em>jr</em></span>
+        <div class="num-lbl">ervaring in B2B<br>marketing &amp; sales</div>
+    </div>
+</div>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+    <div class="manifesto-label">Onze overtuiging</div>
+    <blockquote class="manifesto-quote">
+        <span>"</span>Marketing zonder sales is zichtbaarheid zonder omzet.
+        Sales zonder marketing is hard werken zonder hefboom.
+        Samen zijn ze <em>onverslaanbaar.</em><span>"</span>
+    </blockquote>
+    <div class="manifesto-who">
+        <div class="manifesto-avatar">C</div>
+        <div>
+            <div class="manifesto-name">Captar Team</div>
+            <div class="manifesto-role">Herk-de-Stad · Sales-ready marketing since 2009</div>
+        </div>
+    </div>
+    <div class="manifesto-deco" aria-hidden="true">&amp;</div>
+</section>
+
+<!-- APPROACH -->
+<section class="approach" id="aanpak">
+    <div class="approach-header reveal">
+        <h2 class="approach-h">Hoe wij<br>te werk gaan</h2>
+        <p class="approach-sub">
+            Geen standaard recepten. Elke klant krijgt een aanpak op maat — van strategie tot uitvoering, met meetbare resultaten als einddoel.
+        </p>
+    </div>
+    <div class="approach-grid">
+        <div class="ap-card reveal">
+            <div class="ap-n">01</div>
+            <div class="ap-title">Intake &amp; analyse</div>
+            <p class="ap-p">We brengen uw markt, doelgroep en concurrenten in kaart. Geen aannames — enkel data en gesprekken ter plaatse.</p>
+        </div>
+        <div class="ap-card reveal reveal-d1">
+            <div class="ap-n">02</div>
+            <div class="ap-title">Strategie op maat</div>
+            <p class="ap-p">Een concreet actieplan met kanalen, KPI's en verwachte resultaten. Transparant, realistisch en meetbaar.</p>
+        </div>
+        <div class="ap-card reveal reveal-d2">
+            <div class="ap-n">03</div>
+            <div class="ap-title">Uitvoering &amp; optimalisatie</div>
+            <p class="ap-p">Ons team gaat aan de slag terwijl u focust op uw core business. Maandelijkse rapportage, continue verbetering.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA — LIME BACKGROUND -->
+<section class="cta-wrap">
+    <div class="cta-left reveal">
+        <div class="cta-pre">Klaar om te groeien?</div>
+        <h2 class="cta-h">Laten we uw<br>pipeline opvullen.</h2>
+        <p class="cta-sub">Plan een vrijblijvend gesprek van 30 minuten. Wij luisteren, analyseren en tonen wat er mogelijk is voor uw bedrijf.</p>
+    </div>
+    <div class="cta-right reveal reveal-d1">
+        <a href="#" class="btn-dark">Plan een gratis gesprek</a>
+        <a href="#" class="btn-ghost-dark">
+            Bekijk referenties
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="#" class="footer-logo">Cap<em>tar</em></a>
+            <p class="footer-about">Sales-ready marketing voor ambitieuze B2B-bedrijven. Gevestigd in Herk-de-Stad, actief in heel België en internationaal.</p>
+        </div>
+        <div class="footer-col">
+            <h5>Diensten</h5>
+            <ul>
+                <li><a href="#">Digital Marketing</a></li>
+                <li><a href="#">Business Development</a></li>
+                <li><a href="#">Websites</a></li>
+                <li><a href="#">Interim Management</a></li>
+                <li><a href="#">Strategisch Advies</a></li>
+                <li><a href="#">Lead Generation</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Bedrijf</h5>
+            <ul>
+                <li><a href="#">Over ons</a></li>
+                <li><a href="#">Referenties</a></li>
+                <li><a href="#">Nieuws</a></li>
+                <li><a href="#">Carrière</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h5>Contact</h5>
+            <ul>
+                <li><a href="#">Plan een gesprek</a></li>
+                <li><a href="#">Kerkstraat 75, Schulen</a></li>
+                <li><a href="#">info@captar.be</a></li>
+                <li><a href="#">LinkedIn</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Captar bv · Herk-de-Stad · België</span>
+        <span><a href="#">Privacy</a> · <a href="#">Voorwaarden</a></span>
+    </div>
+</footer>
+
+<script>
+    // Scroll-triggered reveals
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal, .intro-pre, .intro-text, .manifesto-label, .manifesto-quote, .manifesto-who').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
